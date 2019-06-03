@@ -26,10 +26,10 @@ void preKMP(char *x,int m,int *kmpNext) {
  * 以上两个预处理的函数均可用，且效果相同
  */
 int KMP_Count_Unoverlap(char *x, int m, char *y, int n) {   //x 是模式串，y 是主串，m 为 x 的长度，n 为 y 的长度，返回 x 在 y 中出现的次数，不可以重叠
-    int next[10010];
     int cnt = 0, k = -1;
+    int *next = new int[m + 5];
     kmp_pre(x, m, next);
-//    preKMP(x, m, next);
+    //    preKMP(x, m, next);
     for(int i = 0;i < n;i ++) {
         while(k > -1 && x[k+1] != y[i]) k = next[k];
         if(x[k+1] == y[i]) k++;
@@ -37,12 +37,14 @@ int KMP_Count_Unoverlap(char *x, int m, char *y, int n) {   //x 是模式串，y
             k=-1; cnt++;
         }
     }
+    delete [] next;
     return cnt;
 }
 int KMP_Count_Overlap(char *x, int m, char *y, int n) {   //x 是模式串，y 是主串，m 为 x 的长度，n 为 y 的长度，返回 x 在 y 中出现的次数，可以重叠
-    int i = 0, j = 0, ans = 0, next[10010];
+    int i = 0, j = 0, ans = 0;
+    int *next = new int[m + 5];
     kmp_pre(x, m, next);
-//    preKMP(x, m, next);
+    //    preKMP(x, m, next);
     while (i < n) {
         while (-1 != j && y[i] != x[j]) j = next[j];
         i++; j++;
@@ -51,5 +53,6 @@ int KMP_Count_Overlap(char *x, int m, char *y, int n) {   //x 是模式串，y �
             j = next[j];
         }
     }
+    delete [] next;
     return ans;
 }
