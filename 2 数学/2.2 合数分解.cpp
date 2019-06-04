@@ -1,6 +1,7 @@
 /*
  * 合数分解成素数乘积
  * factor[i][0] 中存储的是素数，factor[i][1] 中存储的是对应的 [0] 有多少个
+ * fatCnt 是 facotr 的长度
  * 使用方法：
  * 先 getPrime() 获取素数表
  * 然后使用 getFactor() 来得到表单
