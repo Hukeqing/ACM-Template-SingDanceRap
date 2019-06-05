@@ -2,19 +2,29 @@ import os
 import platform
 
 saver = open(os.path.join(os.path.abspath('.'), 'ACM-Template.txt'), 'w')
-if platform.system() == 'Windows':
-    minlist = len(os.path.abspath('.').split(r'\\'))
-else:
-    minlist = len(os.path.abspath('.').split(r'/'))
+filelist = []
+filelistpath = []
+dirlist = []
 for i, j, k in os.walk(os.path.abspath('.')):
-    if platform.system() == 'Windows':
-        tmp = i.split(r'\\')
+    filelist.extend([x for x in k if x[-3:] == "cpp"])
+    filelistpath.extend([i + ('\\' if platform.system() == 'Windows' else '/') + x for x in k if x[-3:] == "cpp"])
+    dirlist.extend(j)
+filelist.sort()
+filelistpath.sort()
+dirlist.sort()
+curfile = 0
+curdir = 0
+while curdir < len(dirlist):
+    if dirlist[curdir] < filelist[curfile]:
+        saver.write('\t\t\t\t\t\t' + dirlist[curdir] + '\n')
+        curdir += 1
     else:
-        tmp = i.split(r'/')
-    saver.write('\t\t\t\t' + str(tmp[-1]) + '\n')
-    k.sort()
-    for item in k:
-        if item[-3:] == 'cpp':
-            saver.write("\n\n\t\t\t\t" + item[:-4] + '\n\n\n')
-            with open(os.path.join(i, item), 'r') as f:
-                saver.write(f.read())
+        saver.write('\t\t\t\t\t\t' + filelist[curfile][:-4] + '\n\n\n')
+        with open(filelistpath[curfile], 'r') as f:
+            saver.write(f.read() + '\n')
+        curfile += 1
+while curfile < len(filelist):
+    saver.write('\t\t\t\t\t\t' + filelist[curfile][:-4] + '\n\n\n')
+    with open(filelistpath[curfile], 'r') as f:
+        saver.write(f.read() + '\n')
+    curfile += 1
