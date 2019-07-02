@@ -2,7 +2,7 @@
  * 先读入矩阵
  * 然后 Max_Clique 函数返回最大值
  */
-#define N 55 // 最大边长
+#define N 55 // 点数
 // mp 为邻接矩阵 n 为边长
 int n, ans, mp[N][N], f[N], now[N];
 void dfs(int u, int sum)
