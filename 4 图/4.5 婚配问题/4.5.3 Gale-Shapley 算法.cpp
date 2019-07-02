@@ -18,11 +18,14 @@ void Gale_Shapley()
 {
     memset(by, 0, sizeof(by));
     memset(gl, 0, sizeof(gl));
+    for (size_t i = 0; i <= n; i++)
+        r[i] = 1;
+
     int flag, t;
     while (1)
     {
         flag = 1;
-        for (int i = 1; i <= n; i++)
+        for (int i = 1; i <= n; i++) // 编号起始值
             if (!by[i])
             {
                 t = b[i][r[i]++]; // t 是 他喜欢的女生且他还没有匹配过

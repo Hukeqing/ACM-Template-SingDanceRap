@@ -1,5 +1,7 @@
 .vscode
 ACM-Template.txt
 main.cpp
+temp.cpp
 main.exe
+temp.exe
 in.txt
