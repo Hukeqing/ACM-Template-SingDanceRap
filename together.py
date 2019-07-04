@@ -6,9 +6,13 @@ filelist = []
 filelistpath = []
 dirlist = []
 for i, j, k in os.walk(os.path.abspath('.')):
+    if ".vscode" in  i or ".git" in i:
+        continue
     filelist.extend([x for x in k if x[-3:] == "cpp"])
     filelistpath.extend([i + ('\\' if platform.system() == 'Windows' else '/') + x for x in k if x[-3:] == "cpp"])
     dirlist.extend(j)
+dirlist.remove('.vscode')
+dirlist.remove('.git')
 filelist.sort()
 filelistpath.sort()
 dirlist.sort()
@@ -20,11 +24,11 @@ while curdir < len(dirlist):
         curdir += 1
     else:
         saver.write('\t\t\t\t\t\t' + filelist[curfile][:-4] + '\n\n\n')
-        with open(filelistpath[curfile], 'r') as f:
+        with open(filelistpath[curfile], 'r', encoding='UTF-8') as f:
             saver.write(f.read() + '\n')
         curfile += 1
 while curfile < len(filelist):
     saver.write('\t\t\t\t\t\t' + filelist[curfile][:-4] + '\n\n\n')
-    with open(filelistpath[curfile], 'r') as f:
+    with open(filelistpath[curfile], 'r', encoding='UTF-8') as f:
         saver.write(f.read() + '\n')
     curfile += 1
