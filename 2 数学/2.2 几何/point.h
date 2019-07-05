@@ -9,7 +9,7 @@ struct point
     point(double _x, double _y);
     bool operator<(Point b) const;          // 点左右判断 - line 中使用
     bool operator==(point b) const;         // 点相等判断
-    point operator+(const Point &b) const;  // 向量相加
+    point operator+(const point &b) const;  // 向量相加
     point operator-(const point &b) const;  // 向量相减
     point operator*(const double &k) const; // 向量乘法
     point operator/(const double &k) const; // 向量除法

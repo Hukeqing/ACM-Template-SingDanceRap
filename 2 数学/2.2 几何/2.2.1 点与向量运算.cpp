@@ -14,7 +14,7 @@ struct point
     point() {}
     point(double _x, double _y) : x(_x), y(_y) {}
     // 点左右判断 - line 中使用
-    bool operator<(Point b) const
+    bool operator<(point b) const
     {
         return sgn(x−b.x) == 0 ? sgn(y−b.y) < 0 : x < b.x;
     }
@@ -24,7 +24,7 @@ struct point
         return sgn(x - b.x) == 0 && sgn(y - b.y) == 0;
     }
     // 向量相加
-    point operator+(const Point &b) const
+    point operator+(const point &b) const
     {
         return Point(x + b.x, y + b.y);
     }

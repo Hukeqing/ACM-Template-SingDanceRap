@@ -17,11 +17,13 @@ struct line
     line() {}
     line(point _s, point _e) : s(_s), e(_e) {}
     // 判断射线重合。如果要判断线段，可以使用先 adjust 一下
+    // 需要 point 的 ==
     bool operator==(line v)
     {
         return (s == v.s) && (e == v.e);
     }
     // 根据一个点和倾斜角 angle 确定直线,0 <= angle < pi
+    // 需要 point 的 构造
     line(point p, double angle)
     {
         s = p;
@@ -35,6 +37,7 @@ struct line
         }
     }
     // 根据 ax + by + c = 0 确定直线
+    // 需要 point 的构造
     line(double a, double b, double c)
     {
         if (sgn(a) == 0)
@@ -60,6 +63,7 @@ struct line
             swap(s, e);
     }
     // 求线段长度
+    // 需要 point 的 distance
     double lenth()
     {
         return s.distance(e);
@@ -78,6 +82,7 @@ struct line
     // 1 在左侧
     // 2 在右侧
     // 3 在直线上
+    // 需要 point 的 - ^
     int relation(point p)
     {
         int c = sgn((p - s) ^ (e - s));
@@ -89,11 +94,13 @@ struct line
             return 3;
     }
     // 点在线段上的判断
+    // 需要 point 的 - ^
     bool pointonseg(point p)
     {
         return sgn((p - s) ^ (e - s)) == 0 && sgn((p - s) * (p - e)) <= 0;
     }
     // 两向量平行 (对应直线平行或重合)
+    // 需要 point 的 - ^
     bool parallel(line v)
     {
         return sgn((e - s) ^ (v.e - v.s)) == 0;
@@ -102,6 +109,7 @@ struct line
     // 2 规范相交
     // 1 非规范相交
     // 0 不相交
+    // 需要 point 的 - ^ *(point)
     int segcrossseg(line v)
     {
         int d1 = sgn((e - s) ^ (v.s - s));
@@ -121,6 +129,7 @@ struct line
     // 2 规范相交
     // 1 非规范相交
     // 0 不相交
+    // 需要 point 的 - ^
     int linecrossseg(line v)
     {
         int d1 = sgn((e - s) ^ (v.s - s));
@@ -133,6 +142,7 @@ struct line
     // 0 平行
     // 1 重合
     // 2 相交
+    // 需要 parallel relation
     int linecrossline(line v)
     {
         if ((*this).parallel(v))
@@ -141,6 +151,7 @@ struct line
     }
     // 求两直线的交点
     // 要保证两直线不平行或重合
+    // 需要 point 的 构造 - ^ *(double)
     point crosspoint(line v)
     {
         double a1 = (v.e - v.s) ^ (s - v.s);
@@ -148,61 +159,40 @@ struct line
         return point((s.x * a2 - e.x * a1) / (a2 - a1), (s.y * a2 - e.y * a1) / (a2 - a1));
     }
     // 点到直线的距离
+    // 需要 lenth
+    // 需要 point 的 - ^
     double dispointtoline(point p)
     {
         return fabs((p - s) ^ (e - s)) / lenth();
     }
     // 点到线段的距离
+    // 需要 dispointtoline
+    // 需要 point 的 - *(point) distance
     double dispointtoseg(point p)
     {
-        if (sgn((p−s) * (e−s)) < 0 || sgn((p−e) * (s−e)) < 0)
+        if (sgn((p - s) * (e - s)) < 0 || sgn((p - e) * (s - e)) < 0)
             return min(p.distance(s), p.distance(e));
         return dispointtoline(p);
     }
     // 返回线段到线段的距离
     // 前提是两线段不相交，相交距离就是 0 了
+    // 需要 dispointtoseg
     double dissegtoseg(line v)
     {
         return min(min(dispointtoseg(v.s), dispointtoseg(v.e)), min(v.dispointtoseg(s), v.dispointtoseg(e)));
     }
     // 返回点 p 在直线上的投影
+    // 需要 point 的 - *(point) / len
     Point lineprog(Point p)
     {
-        return s + (((e - s) * ((e - s) * (p - s))) / ((e - s).len2()));
+        return s + (((e - s) * ((e - s) * (p - s))) / ((e - s).len(false)));
     }
     // 返回点 p 关于直线的对称点
+    // 需要 lineprog
+    // 需要 point 的 构造
     Point symmetrypoint(Point p)
     {
         Point q = lineprog(p);
-        return Point(2 * q.x - p.x, 2 * q.y - ]-p.y);
+        return Point(2 * q.x - p.x, 2 * q.y - p.y);
     }
 };
-
-// 简易版本的线段相交
-struct line
-{
-    double x1;
-    double y1;
-    double x2;
-    double y2;
-};
-bool intersection(const line &l1, const line &l2)
-{
-    //快速排斥实验
-    if ((l1.x1 > l1.x2 ? l1.x1 : l1.x2) < (l2.x1 < l2.x2 ? l2.x1 : l2.x2) ||
-        (l1.y1 > l1.y2 ? l1.y1 : l1.y2) < (l2.y1 < l2.y2 ? l2.y1 : l2.y2) ||
-        (l2.x1 > l2.x2 ? l2.x1 : l2.x2) < (l1.x1 < l1.x2 ? l1.x1 : l1.x2) ||
-        (l2.y1 > l2.y2 ? l2.y1 : l2.y2) < (l1.y1 < l1.y2 ? l1.y1 : l1.y2))
-    {
-        return false;
-    }
-    //跨立实验
-    if ((((l1.x1 - l2.x1) * (l2.y2 - l2.y1) - (l1.y1 - l2.y1) * (l2.x2 - l2.x1)) *
-         ((l1.x2 - l2.x1) * (l2.y2 - l2.y1) - (l1.y2 - l2.y1) * (l2.x2 - l2.x1))) > 0 ||
-        (((l2.x1 - l1.x1) * (l1.y2 - l1.y1) - (l2.y1 - l1.y1) * (l1.x2 - l1.x1)) *
-         ((l2.x2 - l1.x1) * (l1.y2 - l1.y1) - (l2.y2 - l1.y1) * (l1.x2 - l1.x1))) > 0)
-    {
-        return false;
-    }
-    return true;
-}

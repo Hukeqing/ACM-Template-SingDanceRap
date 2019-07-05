@@ -1,7 +1,9 @@
-// 此模板中使用到了point 中的内容
-#include "point.h"
-
 const int MAXN = 1000;
+
+struct point
+{
+    double x, y;
+};
 
 point nlist[MAXN];
 
