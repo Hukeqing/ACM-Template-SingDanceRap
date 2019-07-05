@@ -9,7 +9,7 @@ int sgn(double x)
         return -1;
     return 1;
 }
-// 此模板中使用到了point中的函数
+// 此模板中使用到了point中的内容
 #include "point.h"
 struct Line
 {

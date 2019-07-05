@@ -1,8 +1,9 @@
 const int MAXN = 1000;
-struct node
-{
-    int x, y;
-} nlist[MAXN];
+
+// 此模板中使用到了point 中的内容
+#include "point.h"
+
+point nlist[MAXN];
 
 inline double solve(int n)
 {
