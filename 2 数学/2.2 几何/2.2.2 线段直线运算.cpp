@@ -1,3 +1,5 @@
+// 此模板中使用到了point中的内容
+#include "point.h"
 const double eps = 1e-8;
 const double pi = acos(−1.0);
 
@@ -9,20 +11,18 @@ int sgn(double x)
         return -1;
     return 1;
 }
-// 此模板中使用到了point中的内容
-#include "point.h"
-struct Line
+struct line
 {
     point s, e;
-    Line() {}
-    Line(point _s, point _e) : s(_s), e(_e) {}
+    line() {}
+    line(point _s, point _e) : s(_s), e(_e) {}
     // 判断射线重合。如果要判断线段，可以使用先 adjust 一下
-    bool operator==(Line v)
+    bool operator==(line v)
     {
         return (s == v.s) && (e == v.e);
     }
     // 根据一个点和倾斜角 angle 确定直线,0 <= angle < pi
-    Line(point p, double angle)
+    line(point p, double angle)
     {
         s = p;
         if (sgn(angle - pi / 2) == 0)
@@ -35,7 +35,7 @@ struct Line
         }
     }
     // 根据 ax + by + c = 0 确定直线
-    Line(double a, double b, double c)
+    line(double a, double b, double c)
     {
         if (sgn(a) == 0)
         {
@@ -93,15 +93,16 @@ struct Line
     {
         return sgn((p - s) ^ (e - s)) == 0 && sgn((p - s) * (p - e)) <= 0;
     }
-    bool parallel(Line v)
+    // 两向量平行 (对应直线平行或重合)
+    bool parallel(line v)
     {
         return sgn((e - s) ^ (v.e - v.s)) == 0;
     }
-    //两线段相交判断
+    // 两线段相交判断
     // 2 规范相交
     // 1 非规范相交
     // 0 不相交
-    int segcrossseg(Line v)
+    int segcrossseg(line v)
     {
         int d1 = sgn((e - s) ^ (v.s - s));
         int d2 = sgn((e - s) ^ (v.e - s));
@@ -120,7 +121,7 @@ struct Line
     // 2 规范相交
     // 1 非规范相交
     // 0 不相交
-    int linecrossseg(Line v)
+    int linecrossseg(line v)
     {
         int d1 = sgn((e - s) ^ (v.s - s));
         int d2 = sgn((e - s) ^ (v.e - s));
@@ -132,7 +133,7 @@ struct Line
     // 0 平行
     // 1 重合
     // 2 相交
-    int linecrossline(Line v)
+    int linecrossline(line v)
     {
         if ((*this).parallel(v))
             return v.relation(s) == 3;
@@ -140,7 +141,7 @@ struct Line
     }
     // 求两直线的交点
     // 要保证两直线不平行或重合
-    point crosspoint(Line v)
+    point crosspoint(line v)
     {
         double a1 = (v.e - v.s) ^ (s - v.s);
         double a2 = (v.e - v.s) ^ (e - v.s);
@@ -160,7 +161,7 @@ struct Line
     }
     // 返回线段到线段的距离
     // 前提是两线段不相交，相交距离就是 0 了
-    double dissegtoseg(Line v)
+    double dissegtoseg(line v)
     {
         return min(min(dispointtoseg(v.s), dispointtoseg(v.e)), min(v.dispointtoseg(s), v.dispointtoseg(e)));
     }
@@ -178,14 +179,14 @@ struct Line
 };
 
 // 简易版本的线段相交
-struct Line
+struct line
 {
     double x1;
     double y1;
     double x2;
     double y2;
 };
-bool intersection(const Line &l1, const Line &l2)
+bool intersection(const line &l1, const line &l2)
 {
     //快速排斥实验
     if ((l1.x1 > l1.x2 ? l1.x1 : l1.x2) < (l2.x1 < l2.x2 ? l2.x1 : l2.x2) ||

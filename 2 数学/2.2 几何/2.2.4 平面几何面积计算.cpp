@@ -1,7 +1,7 @@
-const int MAXN = 1000;
-
 // 此模板中使用到了point 中的内容
 #include "point.h"
+
+const int MAXN = 1000;
 
 point nlist[MAXN];
 
