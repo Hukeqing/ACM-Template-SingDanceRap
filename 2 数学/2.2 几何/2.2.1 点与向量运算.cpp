@@ -89,9 +89,9 @@ struct point
         double c = cos(angle), s = sin(angle);
         return point(p.x + v.x * c - v.y * s, p.y + v.x * s + v.y * c);
     }
+    // 计算点 this、a、b 组成的角的角度，角的两条射线为 this-a、this-b
+    double rad(point a, point b)
+    {
+        return fabs(atan2(fabs((a - p) ^ (b - p)), (a - p) * (b - p)));
+    }
 };
-// 计算点 mid、a、b 组成的角的角度，角的两条射线为 mid-a、mid-b
-double rad(point a, point b, point mid)
-{
-    return fabs(atan2(fabs((a - p) ^ (b - p)), (a - p) * (b - p)));
-}

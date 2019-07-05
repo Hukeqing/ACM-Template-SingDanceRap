@@ -21,5 +21,5 @@ struct point
     point rotleft();                        // 向量绕原点逆时针旋转 90 度
     point rotright();                       // 向量绕原点顺时针旋转 90 度
     point rotate(point p, double angle);    // 绕 p 点逆时针旋转 angle 度
+    double rad(point a, point b);           // 计算点 this、a、b 组成的角的角度，角的两条射线为 this-a、this-b
 };
-double rad(point a, point b, point mid); // 计算点 mid、a、b 组成的角的角度，角的两条射线为 mid-a、mid-b
