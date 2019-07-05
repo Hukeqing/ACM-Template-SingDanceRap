@@ -40,3 +40,4 @@ void factorial(int n){
         cout << setw(4) << setfill('0') << a[i];
     }
     cout << endl;
+}
