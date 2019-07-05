@@ -26,7 +26,7 @@ bool finds(int x)
     }
     return false;
 }
-void init()
+inline void init()
 {
     memset(line, 0, sizeof(line));
 }

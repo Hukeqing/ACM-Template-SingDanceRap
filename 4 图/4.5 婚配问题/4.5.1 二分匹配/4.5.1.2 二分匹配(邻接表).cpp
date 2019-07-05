@@ -12,7 +12,7 @@ struct Edge
     int to, next;
 } edge[MAXM];
 int head[MAXN], tot;
-void init()
+inline void init()
 {
     tot = 0;
     memset(head, -1, sizeof(head));
