@@ -1,3 +1,7 @@
+/*
+ * 无向图找环
+ * 如果有环，调用 unite 时会返回 true
+ */
 const int MAXN = 1010;
 
 int f[MAXN];
