@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <climits>
 #include <algorithm>
 #include <iostream>
 #include <list>
@@ -12,6 +13,7 @@
 #include <stack>
 #include <string>
 #include <vector>
+#include <limits>
 #include <unordered_map>
 #include <unordered_set>
 #if __cplusplus >= 199711L

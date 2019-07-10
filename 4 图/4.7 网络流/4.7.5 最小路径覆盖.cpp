@@ -17,8 +17,9 @@ int first[MAXN * 2];
 int len = 1;
 int begin, end; // 网络流的起始点和结束点
 int h[MAXN * 2];
-int p[MAXN * 2], match[MAXN * 2]; // 如果不需要输出边的内容，则不需要这个变量
-bool tf[MAXN * 2];                // 如果不需要输出边的内容，则不需要这个变量
+int p[MAXN * 2];
+int match[MAXN * 2]; // 如果不需要输出边的内容，则不需要这个变量
+bool tf[MAXN * 2];   // 如果不需要输出边的内容，则不需要这个变量
 // 加边，单项边三个参数，双向边四个参数
 void addedge(int x, int y, int w, int rw = 0)
 {
