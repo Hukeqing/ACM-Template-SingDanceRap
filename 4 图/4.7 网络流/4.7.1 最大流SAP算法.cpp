@@ -23,7 +23,7 @@ int SAP(int vs, int vt)
     memset(gap, 0, sizeof(gap));
     gap[0] = vt;
     int v, u = pre[vs] = vs, maxflow = 0, aug = INT_MAX;
-    curRoads = 0;
+    // curRoads = 0;
     while (level[vs] < vt)
     {
         // 寻找可行弧
