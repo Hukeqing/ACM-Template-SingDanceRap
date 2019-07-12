@@ -1,8 +1,3 @@
-#include<iostream>
-#include<iomanip>
-
-using namespace std;
-
 int main(void){
     void factorial(int n);//阶乘函数||多次幂函数
 
@@ -34,6 +29,7 @@ void factorial(int n){
      * 输出
      * 最高位原样输出
      * 其他位小于1000的，高位补0
+     * 需要头文件<iomanip>
      */
     cout <<a[places];
     for(i=places-1;i>=0;i--){
