@@ -1,3 +1,4 @@
+//二维
 int solve(int n, int W) {
     memset(dp, 0, sizeof(dp));
     for (int i = 1; i <= n; i++) { //i从1开始，因为i=0的值已经确定为0
@@ -11,4 +12,18 @@ int solve(int n, int W) {
         }
     }
     return dp[n][W];
+}
+
+
+//一维
+int solve(int n, int W){
+    memset(dp, 0, sizeof(dp));
+    for(int i = 1; i <= n; i++){
+        for(int j = W; j >= 0; j--){
+            if(j - w[i] >= 0){
+                dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+            }
+        }
+    }
+    return dp[W];
 }
