@@ -4,6 +4,7 @@
  * 每组示例前先使用 init 函数
  * 然后用 addedge 添加边
  * 最后solve一下
+ * 点编号 1 - n
  */
 
 const int MAXN = 10010;  // 点数
