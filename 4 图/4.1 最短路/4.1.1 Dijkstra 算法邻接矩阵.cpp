@@ -6,12 +6,14 @@
  * 点编号为 0 - n
  */
 
-#define typec int
 const int MAXN = 1010;
-const typec INF = 0x3f3f3f3f; //防止后面溢出，这个不能太大
+const int INF = 0x3f3f3f3f; //防止后面溢出，这个不能太大
+int cost[MAXN][MAXN];
 bool vis[MAXN];
 int pre[MAXN];
-void Dijkstra(typec cost[][MAXN], typec lowcost[], int n, int beg)
+int lowcost[MAXN];
+
+void Dijkstra(int n, int beg)
 {
     for (int i = 0; i < n; i++)
     {
