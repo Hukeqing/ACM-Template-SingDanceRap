@@ -3,7 +3,7 @@
  * 求出源 start 到所有点的最短路径
  * 返回各点的最短路径 lowcost[], 路径 pre[].pre[i] 记录 start 到 i 路径上的父结点，pre[start]=-1
  * 路径权值必须非负
- * 点编号为 0 - n
+ * 点编号为 [b, e)
  */
 
 const int MAXN = 2600;  // 点数
