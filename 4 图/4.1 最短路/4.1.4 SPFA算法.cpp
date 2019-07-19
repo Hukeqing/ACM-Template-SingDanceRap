@@ -28,7 +28,7 @@ bool SPFA()
     queue<int> Q;
     Q.push(source);
     dist[source] = 0;
-    visited[source] = 1;
+    visited[source] = true;
     enqueue_num[source]++;
     while (!Q.empty())
     {

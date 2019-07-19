@@ -6,8 +6,9 @@
  * 点编号为 [b, e)
  */
 
-const int MAXN = 2600;  // 点数
-const int MAXM = 12600; // 边数
+const int MAXN = 2600;      // 点数
+const int MAXM = 12600;     // 边数
+const int INF = 0x3fffffff; //防止后面溢出，这个不能太大
 
 struct Edge
 {
@@ -40,7 +41,7 @@ void Dijkstra(int b, int e, int start)
 {
     for (int i = b; i < e; i++)
     {
-        lowcost[i] = INT_MAX;
+        lowcost[i] = INF;
         vis[i] = false;
         pre[i] = -1;
     }
@@ -59,7 +60,7 @@ void Dijkstra(int b, int e, int start)
     for (int j = b; j < e - 1; j++)
     {
         int k = -1;
-        int Min = INT_MAX;
+        int Min = INF;
         for (int i = b; i < e; i++)
         {
             if (!vis[i] && lowcost[i] < Min)
