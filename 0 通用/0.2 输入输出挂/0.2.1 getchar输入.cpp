@@ -31,11 +31,4 @@ struct FastIO {
         x = (f ? -x : x);
         return *this;
     }
-    template<class T>
-    inline void print_F(T& x){
-        if (x > 9) print_F(x / 10);putchar(x % 10 + '0');
-    }
-    inline FastIO& operator<<(int& x){
-        print_F(x); return *this;
-    }
 }rin;
