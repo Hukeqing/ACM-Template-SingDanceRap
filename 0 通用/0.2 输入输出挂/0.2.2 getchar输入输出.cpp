@@ -5,10 +5,10 @@
  * FastRead (a);
  */
 template <class __T>
-inline bool FastRead (__T& x) {
+inline bool FastRead (__T &x) {
     x = 0; char f = 0; int ch = getchar(); double d = 0.1;
+    while((ch > '9' || ch < '0') && ~ch) { f |= (ch == '-'); ch = getchar(); }
     if (ch == EOF) return false;
-    while(ch > '9' || ch < '0') { f |= (ch == '-'); ch = getchar(); }
     while(ch <= '9' && ch >= '0') { x = x * 10 + ch - 48; ch = getchar(); }
     if (ch == '.') {
         ch = getchar();
