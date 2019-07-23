@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
 /*
  * SPFA 算法邻接表
  * 支持负权边，检测负权回路
@@ -85,8 +83,4 @@ void getroad(int start, int end, int *road)
         road[cur++] = s.top();
         s.pop();
     }
-}
-int main()
-{
-    return 0;
 }
