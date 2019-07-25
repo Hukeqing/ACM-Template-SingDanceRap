@@ -1,12 +1,13 @@
 /*
- * 主席树求区间第 k 小，支持离线查询
+ * 主席树求区间第 k 小，离线查询
  * 先将变量保存至数组 a 中，点编号为 1 - n
+ * 将变量 tot 初始化为 0
  * 然后调用 Init_hash 函数完成建树
  * 之后便可以进行询问操作
  * 重复数字会重复结算
  */
-const int MAXN = 100010;
-const int M = MAXN * 30;
+const int MAXN = 100010;        // 点数
+const int M = MAXN * 30;        // 建树的数组大小，至少 30 倍
 int n, q, m, tot;
 int a[MAXN], t[MAXN];
 int T[MAXN], lson[M], rson[M], c[M];
