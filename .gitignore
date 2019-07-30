@@ -1,6 +1,7 @@
 .vscode
 ACM-Template.txt
 main.*
+temp[0-9].*
 temp.*
 in.txt
 out.txt
