@@ -3,8 +3,7 @@
  * 先将变量保存至数组 a 中，点编号为 1 - n
  * 将变量 tot 初始化为 0
  * 然后调用 Init_hash 函数完成建树
- * 之后便可以进行询问操作
- * 返回的值为询问的值的下标，如果需要值，则为 t[query]
+ * 之后便可以进行询问操作，返回第 k 小的值
  * 重复数字会重复结算
  */
 const int MAXN = 100010;        // 点数
@@ -76,7 +75,7 @@ int query(int left_root, int right_root, int k) // 参数为左区间、右区�
             right_root = rson[right_root];
         }
     }
-    return l;
+    return t[l];
 }
 void Init_hash()
 {
