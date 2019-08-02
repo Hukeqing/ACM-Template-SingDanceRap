@@ -1,7 +1,7 @@
-<<<<<<< HEAD
+
 int main(void){
     void factorial(int n);//阶乘函数||多次幂函数
-=======
+
 #include <iostream>
 #include <iomanip>
 
@@ -10,7 +10,6 @@ using namespace std;
 int main(void)
 {
     void factorial(int n); //阶乘函数||多次幂函数
->>>>>>> 19059e3c7196c0960b270e5a3e0150c559673668
 
     int n;
     while (cin >> n)
