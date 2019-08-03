@@ -9,6 +9,10 @@
  * 即 k = (int)log2(s-v+1) 
  * 查询结果应该为 min(dp[s][k], dp[v-2^k+1][k]) 
  */
+#define M 100010
+#define MAXN 500
+#define MAXM 500
+int dp[M][18];
 void makermq(int n, int b[]) // 返回最小值模式
 {
     int i, j;
