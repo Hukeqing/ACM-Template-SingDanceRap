@@ -18,7 +18,7 @@ struct boy // 男主的属性——用于计算好感度，必须包含变量 id
 {
     int id;
     boy() {}
-    boy(int i, int lo, int gr, int no)
+    boy(int i)
     {
         this->id = i;
     }
