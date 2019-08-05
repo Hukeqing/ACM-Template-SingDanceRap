@@ -1,25 +1,24 @@
 # -*-conding=utf-8-*-
 import os
 import platform
+import re
 
 saver = open(os.path.join(os.path.abspath("."), "ACM-Template.txt"), "wb")
 filelist = []
 filelistpath = []
 dirlist = []
 for i, j, k in os.walk(os.path.abspath(".")):
-    if ".vscode" in i or ".git" in i:
-        continue
-    filelist.extend([x for x in k if x[-3:] == "cpp"])
-    filelistpath.extend(
-        [
-            i + ("\\" if platform.system() == "Windows" else "/") + x
-            for x in k
-            if x[-3:] == "cpp"
-        ]
-    )
-    dirlist.extend(j)
-dirlist.remove(".vscode")
-dirlist.remove(".git")
+    curdir = i.split("\\" if platform.system() == "Windows" else "/")
+    if re.match(r'[0-9]', str(curdir[-1])):
+        filelist.extend([x for x in k if x[-3:] == "cpp"])
+        filelistpath.extend(
+            [
+                i + ("\\" if platform.system() == "Windows" else "/") + x
+                for x in k
+                if x[-3:] == "cpp"
+            ]
+        )
+        dirlist.extend(j)
 filelist.sort()
 filelistpath.sort()
 dirlist.sort()
