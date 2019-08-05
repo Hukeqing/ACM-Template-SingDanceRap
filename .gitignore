@@ -1,7 +1,7 @@
 .vscode
-ACM-Template.txt
+ACM-Template.*
 main.*
-temp[0-9].*
-temp.*
+temp*.*
+test*.*
 in.txt
 out.txt
