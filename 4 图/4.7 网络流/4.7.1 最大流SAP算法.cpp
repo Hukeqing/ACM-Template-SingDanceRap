@@ -14,7 +14,7 @@ class sap_m
     int gap[MAXN];        // gap常数优化
     // vector<int> roads[MAXN]; // 导出路径（逆序）
     // int curRoads;            // 导出的路径数
-    int SAP(int vs, int vt)
+    int solve(int vs, int vt)
     {
         memset(pre, -1, sizeof(pre));
         memset(level, 0, sizeof(level));
