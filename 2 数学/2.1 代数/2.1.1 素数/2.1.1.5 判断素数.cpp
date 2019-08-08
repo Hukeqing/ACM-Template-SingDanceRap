@@ -1,5 +1,3 @@
-#include<bits/stdc++.h>
-
 bool judge(int x){
     float n_sqrt;
     if(x == 2 || x == 3){
