@@ -6,16 +6,22 @@
  * 2、使用函数 init
  * 3、把每一个模式串插入到树中 insert
  * 4、使用 query 询问有多少个模式串匹配
- *
+ * 
  * Debug 仅做测试使用
  */
+ 
+ const int CHAR_NUM = 26;//仅小写
+ const int MAXN = 500;//模式串个数
+ const int MAXM = 200;//模式串最长长度
+ const int NUM = MAXN * MAXM;//空间=个数*长度，稳
+ 
 struct Trie
 {
-    int next[500010][26], fail[500010], end[500010];
+    int next[NUM][CHAR_NUM], fail[NUM], end[NUM];
     int root, L;
     int newnode()
     {
-        for (int i = 0; i < 26; i++)
+        for (int i = 0; i < CHAR_NUM; i++)
             next[L][i] = -1;
         end[L++] = 0;
         return L - 1;
@@ -41,7 +47,7 @@ struct Trie
     {
         queue<int> Q;
         fail[root] = root;
-        for (int i = 0; i < 26; i++)
+        for (int i = 0; i < CHAR_NUM; i++)
             if (next[root][i] == -1)
                 next[root][i] = root;
             else
@@ -53,7 +59,7 @@ struct Trie
         {
             int now = Q.front();
             Q.pop();
-            for (int i = 0; i < 26; i++)
+            for (int i = 0; i < CHAR_NUM; i++)
             {
                 if (next[now][i] == -1)
                     next[now][i] = next[fail[now]][i];
@@ -83,14 +89,4 @@ struct Trie
         }
         return res;
     }
-    // void debug()
-    // {
-    //     for (int i = 0; i < L; i++)
-    //     {
-    //         printf("id = %3d, fail = %3d, end = %3d, chi = [", i, fail[i], end[i]);
-    //         for (int j = 0; j < 26; j++)
-    //             printf("%2d", next[i][j]);
-    //         printf("]\n");
-    //     }
-    // }
 };
