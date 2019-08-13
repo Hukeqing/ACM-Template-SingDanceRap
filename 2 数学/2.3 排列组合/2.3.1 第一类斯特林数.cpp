@@ -1,11 +1,5 @@
 //s(n, m) = s(n - 1, m - 1) + (n - 1) * s(n - 1, m)
 //给定正整数n(1<=n<=20),计算出n个元素的集合{1,2,…,n} 可以化为多少个不同的非空子集。
-#include<iostream>
-#include<cstring>
-#include<cstdio>
-
-using namespace std;
-
 typedef long long ll;
 const int N = 101;
 ll s[N][N];

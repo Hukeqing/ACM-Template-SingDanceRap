@@ -1,7 +1,3 @@
-#include<bits/stdc++.h>
-
-using namespace std;
-
 typedef long long ll;
 const int maxn = (int) 1e6 + 100;
 char str[maxn];
