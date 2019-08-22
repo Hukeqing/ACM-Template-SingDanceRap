@@ -1,4 +1,4 @@
-void bsgs(ll y,ll z,ll p)//y^x=z(mod p)
+void bsgs(ll y,ll z,ll p)//y^x=z(mod p) gcd(y, p) = 1
 {
     if(y==0 && z==0){puts("1");return ;}//几句特判 
     if(y==0 && z!=0){return;}//不存在
