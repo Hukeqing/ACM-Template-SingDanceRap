@@ -9,79 +9,75 @@
  * 
  * Debug 仅做测试使用
  */
- 
- const int CHAR_NUM = 26;//仅小写
- const int MAXN = 500;//模式串个数
- const int MAXM = 200;//模式串最长长度
- const int NUM = MAXN * MAXM;//空间=个数*长度，稳
- 
-struct Trie
-{
+
+const int CHAR_NUM = 26;//仅小写
+const int MAXN = 500;//模式串个数
+const int MAXM = 200;//模式串最长长度
+const int NUM = MAXN * MAXM;//空间=个数*长度，稳
+
+struct Trie {
     int next[NUM][CHAR_NUM], fail[NUM], end[NUM];
     int root, L;
-    int newnode()
-    {
+
+    int newnode() {
         for (int i = 0; i < CHAR_NUM; i++)
             next[L][i] = -1;
         end[L++] = 0;
         return L - 1;
     }
-    void init()
-    {
+
+    void reset() {
+        for (int i = 0; i < L; i++) {
+            fail[i] = end[i] = 0;
+            memset(next[i], 0, sizeof(next[i]));
+        }
         L = 0;
         root = newnode();
     }
-    void insert(char *buf)
-    {
-        int len = (int)strlen(buf);
+
+    void insert(char *buf) {
+        int len = (int) strlen(buf);
         int now = root;
-        for (int i = 0; i < len; i++)
-        {
+        for (int i = 0; i < len; i++) {
             if (next[now][buf[i] - 'a'] == -1)
                 next[now][buf[i] - 'a'] = newnode();
             now = next[now][buf[i] - 'a'];
         }
         end[now]++;
     }
-    void build()
-    {
+
+    void build() {
         queue<int> Q;
         fail[root] = root;
         for (int i = 0; i < CHAR_NUM; i++)
             if (next[root][i] == -1)
                 next[root][i] = root;
-            else
-            {
+            else {
                 fail[next[root][i]] = root;
                 Q.push(next[root][i]);
             }
-        while (!Q.empty())
-        {
+        while (!Q.empty()) {
             int now = Q.front();
             Q.pop();
-            for (int i = 0; i < CHAR_NUM; i++)
-            {
+            for (int i = 0; i < CHAR_NUM; i++) {
                 if (next[now][i] == -1)
                     next[now][i] = next[fail[now]][i];
-                else
-                {
+                else {
                     fail[next[now][i]] = next[fail[now]][i];
                     Q.push(next[now][i]);
                 }
             }
         }
     }
-    int query(char *buf)
-    {
-        int len = (int)strlen(buf);
+
+    int query(char *buf) {
+        int len = (int) strlen(buf);
         int now = root;
         int res = 0;
-        for (int i = 0; i < len; i++)
-        {
+        for (int i = 0; i < len; i++) {
             now = next[now][buf[i] - 'a'];
             int temp = now;
-            while (temp != root)
-            {
+            while (temp != root) {
                 res += end[temp];
                 end[temp] = 0;
                 temp = fail[temp];
