@@ -8,6 +8,7 @@
 #define MAXM 600     // 边数
 bool visited[MAXN];    //标记数组
 int dist[MAXN];        //源点到顶点i的最短距离
+int path[MAXN];        //记录最短路的路径
 int enqueue_num[MAXN]; //记录入队次数
 
 struct Edge {
@@ -34,6 +35,7 @@ bool SPFA(int b, int e, int start) {
     memset(enqueue_num, 0, sizeof(enqueue_num));
     for (int i = b; i < e; i++) {
         dist[i] = INT_MAX;
+        path[i] = start;
     }
     queue<int> Q;
     Q.push(start);
@@ -48,6 +50,7 @@ bool SPFA(int b, int e, int start) {
             int to = edge[v].to;
             if (dist[u] + edge[v].cost < dist[to]) {
                 dist[to] = dist[u] + edge[v].cost;
+                path[v] = u;
                 if (!visited[to]) {
                     Q.push(to);
                     enqueue_num[to]++;
@@ -59,4 +62,18 @@ bool SPFA(int b, int e, int start) {
         }
     }
     return true;
+}
+void getroad(int start, int end, int *road) {
+    int p = end;
+    stack<int> s;
+    while (start != p) {
+        s.push(p);
+        p = path[p];
+    }
+    road[0] = start;
+    int cur = 1;
+    while (!s.empty()) {
+        road[cur++] = s.top();
+        s.pop();
+    }
 }
