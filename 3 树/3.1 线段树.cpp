@@ -19,6 +19,7 @@ struct SegTree {
 
     inline void push(int k, int l, int r) {
         if (lazy[k] == 0) return;
+        if (l == r) return;
         set(lson(k), fat(l, r) - l + 1, lazy[k]);
         set(rson(k), r - fat(l, r), lazy[k]);
         lazy[k] = 0;
