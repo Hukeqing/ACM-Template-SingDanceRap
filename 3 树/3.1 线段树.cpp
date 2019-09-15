@@ -25,7 +25,7 @@ struct SegTree {
         lazy[k] = 0;
     }
 
-    // 建树
+    // 建树 [l, r]
     void build(int k, int l, int r, int *a) {
         lazy[k] = 0;
         if (l == r) {
