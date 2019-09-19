@@ -1,5 +1,5 @@
 /*
- * 单源最短路径，SPFA 算法，邻接表形式，使用 Graph-B，复杂度为O(n^2)
+ * 单源最短路径，SPFA 算法，邻接表形式，复杂度为O(n^2)
  * 求出源 start 到所有点的最短路径, 路径权值可以为负
  * 各点的最短路径保存在 lowcost[], pre[i] -> i 的路必选, pre[start] = -1
  * 直接调用 solve 函数求解，点编号范围为 [b, e)，start为起点，graph使用 Graph-B 类型
