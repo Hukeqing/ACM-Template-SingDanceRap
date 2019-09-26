@@ -19,7 +19,7 @@ struct Trie {
     int next[NUM][CHAR_NUM], fail[NUM], end[NUM];
     int root, L;
 
-    int newnode() {
+    int newNode() {
         for (int i = 0; i < CHAR_NUM; i++)
             next[L][i] = -1;
         end[L++] = 0;
@@ -29,10 +29,10 @@ struct Trie {
     void reset() {
         for (int i = 0; i < L; i++) {
             fail[i] = end[i] = 0;
-            memset(next[i], 0, sizeof(next[i]));
+            memset(next[i], -1, sizeof(next[i]));
         }
         L = 0;
-        root = newnode();
+        root = newNode();
     }
 
     void insert(char *buf) {
@@ -40,7 +40,7 @@ struct Trie {
         int now = root;
         for (int i = 0; i < len; i++) {
             if (next[now][buf[i] - 'a'] == -1)
-                next[now][buf[i] - 'a'] = newnode();
+                next[now][buf[i] - 'a'] = newNode();
             now = next[now][buf[i] - 'a'];
         }
         end[now]++;
