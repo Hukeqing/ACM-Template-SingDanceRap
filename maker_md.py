@@ -16,7 +16,7 @@ def getid(t):
 
 
 class cppfile:
-    addtype = 'c++'
+    addtype = 'cpp'
     def __init__(self, *args):
         if len(args) == 2:
             self.allname = args[0]
