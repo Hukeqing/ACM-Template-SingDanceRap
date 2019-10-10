@@ -1,13 +1,15 @@
 # vscode
 .vscode
+
+# Clion
+cmake-build-debug
+CMakeLists.txt
+.idea
+
+# normal
 ACM-Template.*
 main.*
 temp*.*
 test*.*
 in.txt
 out.txt
-
-# Clion
-cmake-build-debug
-CMakeLists.txt
-.idea

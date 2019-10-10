@@ -197,8 +197,8 @@ class LatexSetting:
                                logo_path=input('请输入封面logo文件位置(可以使用相对位置，留空则无): '),
                                main_font=input('请输入文档目录等字体(留空为"Microsoft YaHei"): '),
                                code_font=input('请输入代码字体(留空为"Consolas"): '),
-                               should_match=input('请输入需要处理的文件(文件夹)的文件名通用样式(留空则为全部文件，正则表达式全匹配模式，多种模式则用单个空格隔开): '),
-                               ignore_list=input('请输入免处理的文件(文件夹)的文件名通用样式(留空则为全部文件，正则表达式全匹配模式，多种模式则用单个空格隔开): '),
+                               should_match=input('请输入需要处理的文件(文件夹)的文件名通用样式(留空则为全部文件，正则表达式全匹配模式，多种模式则用单个空格隔开): ').split(' '),
+                               ignore_list=input('请输入免处理的文件(文件夹)的文件名通用样式(留空则为全部文件，正则表达式全匹配模式，多种模式则用单个空格隔开): ').split(' '),
                                save_file=input('请输入最终保存的文件名(默认为Latex.tex): '))
         self.data = json_class.__dict__
         op = input('完成设置(样式表/JSON文件: setting.json)！是否保存的设置？[Y/N]: ')

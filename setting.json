@@ -17,7 +17,8 @@
         "\\d+.+"
     ],
     "ignore_list": [
-        "\\.git \\.vscode"
+        "\\.git",
+        "\\.vscode"
     ],
     "saver_file": "ACM-Template.tex"
 }
