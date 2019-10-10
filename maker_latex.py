@@ -1,13 +1,12 @@
+# python3
 import json
 import re
 from pathlib import Path
 from typing import Optional, List, Tuple
 import platform
+import functools
 
-
-def str2utf(s):
-    return bytes(s, encoding='utf-8')
-
+str2utf = functools.partial(bytes, encoding='utf-8')
 
 class LatexJson:
     def __init__(self,
@@ -154,8 +153,12 @@ class LatexCodeMaker:
             return '\section{' + title + '}\n'
         elif n == 1:
             return '\subsection{' + title + '}\n'
-        else:
+        elif n == 2:
             return '\subsubsection{' + title + '}\n'
+        elif n == 3:
+            return '\paragraph{' + title + '}\n'
+        else:
+            return '\subparagraph{' + title + '}\n'
 
     @staticmethod
     def read_file(path_object: Path, decode_mode):
