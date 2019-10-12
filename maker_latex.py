@@ -8,6 +8,7 @@ import functools
 
 str2utf = functools.partial(bytes, encoding='utf-8')
 
+
 class LatexJson:
     def __init__(self,
                  main_title: str,
@@ -193,7 +194,7 @@ class LatexSetting:
                                author=input('请输入作者: '),
                                padding=tuple([int(t) for t in input('请输入纸面边距(顺序: 左右上下，单位: mm，单个空格隔开): ').split(' ')]),
                                direction_path=input('请输入目录文件夹位置(可以使用相对位置，留空则为当前目录): '),
-                               decode_mode=input('请输入文件编码格式("utf-8" or "gb2312"，默认为utf-8): '),
+                               decode_mode=input('请输入你的文件(指输入文件，输出的tex文件默认为utf-8)编码格式("utf-8" or "gb2312"，默认为utf-8): '),
                                logo_path=input('请输入封面logo文件位置(可以使用相对位置，留空则无): '),
                                main_font=input('请输入文档目录等字体(留空为"Microsoft YaHei"): '),
                                code_font=input('请输入代码字体(留空为"Consolas"): '),
