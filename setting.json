@@ -20,5 +20,6 @@
         "\\.git",
         "\\.vscode"
     ],
-    "saver_file": "ACM-Template.tex"
+    "saver_file": "ACM-Template.tex",
+    "args": "-h -fe"
 }
