@@ -33,7 +33,7 @@ class Args:
         self.args_opt(args=args)
 
     def args_opt(self, args):
-        argv = args.split('')
+        argv = args.split()
         index = 0
         while index < len(argv):
             if argv[index] in Args.title_universal_args:
@@ -50,6 +50,7 @@ class Args:
                     index += 1
                 else:
                     self.set_args.add(argv[index])
+            index += 1
 
     def in_set_args(self, arg):
         return arg in self.set_args
@@ -205,7 +206,7 @@ class LatexCodeMaker:
         if self.args.in_set_args('-' + file_or_dir + 'h'):
             title: str = title.split(maxsplit=1)[1]
         if self.args.in_set_args('-' + file_or_dir + 'e'):
-            title: str = title[::-1].split(maxsplit=1)[1][::-1]
+            title: str = title[::-1].split('.', maxsplit=1)[1][::-1]
         if n == 0:
             return r'\section{' + title + '}\n'
         elif n == 1:
