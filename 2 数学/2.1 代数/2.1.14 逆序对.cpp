@@ -25,22 +25,16 @@ ll sum(ll a[], ll pos){//求逆序对的个数
 }
 
 int main(void) {
-#ifdef ACM_LOCAL
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-#endif
-
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-
     while(cin >> n){
         memset(c, 0, sizeof(ll) * (n +5));
         memset(b, 0, sizeof(ll) * (n + 5));
         ans = 0;
+        //这是求逆序对的和，若求逆序对的个数只要一个for循环就可
         for(int i = 1; i <= n; i++){
             cin >> num[i];
             add(c, num[i], 1);
+            //逆序对的个数
+            //ans += sum(c, num[i]);
             ans += num[i] * (i - sum(c, num[i]));
         }
         for(int i = n; i >= 1; i--){
