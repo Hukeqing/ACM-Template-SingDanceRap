@@ -1,5 +1,5 @@
-#define MAXN 2000
-#define MAXM 10000
+const int MAXN = "Edit";
+const int MAXM = "Edit";
 // 无权有向图
 struct Graph {
     struct Edge {
