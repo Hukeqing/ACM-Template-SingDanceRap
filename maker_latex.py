@@ -85,8 +85,8 @@ class LatexJson:
         self.logo_path = None if logo_path == '' else logo_path
         self.main_font = 'Microsoft YaHei' if main_font == '' else main_font
         self.code_font = 'Consolas' if code_font == '' else code_font
-        self.should_match = [r'.+'] if should_match == '' else should_match if isinstance(should_match, list) else [should_match]
-        self.ignore_list = [] if ignore_list == '' else ignore_list if isinstance(ignore_list, list) else [ignore_list]
+        self.should_match = [r'.+'] if should_match == '' else should_match.split(' ')
+        self.ignore_list = [] if ignore_list == '' else ignore_list.split(' ')
         self.saver_file = 'Latex.tex' if save_file == '' else save_file
         self.args = args
 
@@ -255,8 +255,8 @@ class LatexSetting:
                                logo_path=input('请输入封面logo文件位置(可以使用相对位置，留空则无): '),
                                main_font=input('请输入文档目录等字体(留空为"Microsoft YaHei"): '),
                                code_font=input('请输入代码字体(留空为"Consolas"): '),
-                               should_match=input('请输入需要处理的文件(文件夹)的文件名通用样式(留空则为全部文件，正则表达式全匹配模式，多种模式则用单个空格隔开): ').split(' '),
-                               ignore_list=input('请输入免处理的文件(文件夹)的文件名通用样式(留空则为全部文件，正则表达式全匹配模式，多种模式则用单个空格隔开): ').split(' '),
+                               should_match=input('请输入需要处理的文件(文件夹)的文件名通用样式(留空则为全部文件，正则表达式全匹配模式，多种模式则用单个空格隔开): '),
+                               ignore_list=input('请输入免处理的文件(文件夹)的文件名通用样式(留空则为全部文件，正则表达式全匹配模式，多种模式则用单个空格隔开): '),
                                save_file=input('请输入最终保存的文件名(默认为Latex.tex): '),
                                args=input('请输入额外参数(具体请参考python代码最上方的说明): '))
         self.data = json_class.__dict__
