@@ -1,9 +1,7 @@
 //用树状数组的方法求逆序对
-
 ll num[maxn], b[maxn], c[maxn];	//b用于正序的中间数组，c用于反序的中间数组
 ll ans;
 int n;
-
 int lowbit(int x){
     return x & (-x);
 }
