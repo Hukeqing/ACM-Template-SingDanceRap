@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Optional, List, Tuple
 import platform
 import functools
+import sys
 
 str2utf = functools.partial(bytes, encoding='utf-8')
 
@@ -238,6 +239,8 @@ class LatexSetting:
             with open(r'setting.json', 'r') as f:
                 data = f.read()
             self.data = json.loads(data)
+            if sys.argv[1] == 'Y':
+                return
             op = input('读取到本地设置(样式表/JSON文件: setting.json)，是否使用已保存的设置？[Y/N]: ')
             if op in ['n', 'N', 'no', 'No', 'NO']:
                 self.new_setting()
