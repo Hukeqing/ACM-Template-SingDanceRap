@@ -10,7 +10,7 @@
 const int CHAR_NUM = 26;//仅小写
 const int MAXN = 50;//模式串个数
 const int MAXM = 100010;//模式串最长长度
-const int NUM = MAXN * MAXM;//空间=个数*长度，稳
+const int NUM = MAXN * MAXM;//空间=个数*长度
 
 struct Trie {
     int c[NUM][CHAR_NUM], val[NUM], fail[NUM], cnt;
