@@ -4,33 +4,30 @@
  * 使用前先 init ，初始化范围为 [b, e)
  * 如果 unions 时发现权值与之前的发生冲突，则会返回 false 并且不赋值
  */
-typedef long long ll;
 
-const int MAXN = 100000 + 10;
-ll dist[MAXN];
-ll father[MAXN];
+const int MAXN = "Edit";
+int dist[MAXN];
+int father[MAXN];
 
-void init(ll b, ll e)
-{
-    for (ll i = b; i < e; i++)
-    {
+void init(int b, int e) {
+    for (int i = b; i < e; i++) {
         dist[i] = 0;
         father[i] = i;
     }
 }
-ll finds(ll x)
-{
+
+int finds(int x) {
     if (father[x] == x)
         return x;
-    ll t = father[x];
+    int t = father[x];
     father[x] = finds(father[x]);
     dist[x] += dist[t];
     return father[x];
 }
-bool unions(ll a, ll b, ll distance)
-{
-    ll ra = finds(a);
-    ll rb = finds(b);
+
+bool unions(int a, int b, int distance) {
+    int ra = finds(a);
+    int rb = finds(b);
     if (ra == rb && dist[b] - dist[a] != distance)
         return false;
     father[rb] = ra;

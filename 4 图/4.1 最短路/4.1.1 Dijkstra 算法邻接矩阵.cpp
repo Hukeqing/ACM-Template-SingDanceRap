@@ -6,42 +6,38 @@
  * 可更改路径权值类型，但是必须非负
  * 点编号为 0 - n
  */
-#define MAXN 1010;
+#define MAXN "edit"
 #define INF 0x3f3f3f3f; //防止后面溢出，这个不能太大
-struct Dijkstra_m
-{
+
+struct Dijkstra_m {
     int cost[MAXN][MAXN];
     bool vis[MAXN];
     int pre[MAXN];
     int lowcost[MAXN];
+
     // 全部初始化
-    void init()
-    {
+    void init() {
         memset(cost, 0x3f, sizeof(cost));
     }
+
     // 部分初始化
-    void init(int n)
-    {
+    void init(int n) {
         for (int i = 0; i < n; i++)
             memset(cost[i], 0x3f, sizeof(int) * n);
     }
-    void solve(int n, int start)
-    {
-        for (int i = 0; i < n; i++)
-        {
+
+    void solve(int n, int start) {
+        for (int i = 0; i < n; i++) {
             lowcost[i] = INF;
             vis[i] = false;
             pre[i] = -1;
         }
         lowcost[start] = 0;
-        for (int j = 0; j < n; j++)
-        {
+        for (int j = 0; j < n; j++) {
             int k = -1;
             int Min = INF;
-            for (int i = 0; i < n; i++)
-            {
-                if (!vis[i] && lowcost[i] < Min)
-                {
+            for (int i = 0; i < n; i++) {
+                if (!vis[i] && lowcost[i] < Min) {
                     Min = lowcost[i];
                     k = i;
                 }
@@ -49,10 +45,8 @@ struct Dijkstra_m
             if (k == -1)
                 break;
             vis[k] = true;
-            for (int i = 0; i < n; i++)
-            {
-                if (!vis[i] && lowcost[k] + cost[k][i] < lowcost[i])
-                {
+            for (int i = 0; i < n; i++) {
+                if (!vis[i] && lowcost[k] + cost[k][i] < lowcost[i]) {
                     lowcost[i] = lowcost[k] + cost[k][i];
                     pre[i] = k;
                 }
