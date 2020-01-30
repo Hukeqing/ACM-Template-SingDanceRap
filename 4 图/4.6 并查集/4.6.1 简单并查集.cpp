@@ -12,8 +12,8 @@ int finds(int x) {
     return x == f[x] ? x : f[x] = finds(f[x]);
 }
 void unite(int x, int y) {
-    rx = finds(x);
-    ry = finds(y);
+    int rx = finds(x);
+    int ry = finds(y);
     if (rx != ry)
         f[rx] = ry;
 }
