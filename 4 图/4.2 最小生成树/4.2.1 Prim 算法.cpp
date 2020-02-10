@@ -19,8 +19,7 @@ int Prim(int cost[MAXN][MAXN], int n)
         int minc = INT_MAX;
         int p = -1;
         for (int j = 0; j < n; j++)
-            if (!vis[j] && minc > lowc[j])
-            {
+            if (!vis[j] && minc > lowc[j]) {
                 minc = lowc[j];
                 p = j;
             }
