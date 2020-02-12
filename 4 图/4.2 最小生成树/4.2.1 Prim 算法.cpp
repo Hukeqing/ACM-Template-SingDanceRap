@@ -7,15 +7,13 @@
 const int MAXN = 110;
 bool vis[MAXN];
 int lowc[MAXN];
-int Prim(int cost[MAXN][MAXN], int n)
-{
+int Prim(int cost[MAXN][MAXN], int n) {
     int ans = 0;
     memset(vis, false, sizeof(vis));
     vis[0] = true;
     for (int i = 1; i < n; i++)
         lowc[i] = cost[0][i];
-    for (int i = 1; i < n; i++)
-    {
+    for (int i = 1; i < n; i++) {
         int minc = INT_MAX;
         int p = -1;
         for (int j = 0; j < n; j++)
