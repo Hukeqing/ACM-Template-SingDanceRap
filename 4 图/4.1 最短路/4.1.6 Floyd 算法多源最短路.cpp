@@ -3,7 +3,7 @@
  * 复杂度O(N^3)
  * 多源时高效、可负权、稠密图效果好
  */
-#define MAXN 110
+#define MAXN "edit"
 int g[MAXN][MAXN]; // 算法中的 G 矩阵
 
 // 插入一条带权有向边

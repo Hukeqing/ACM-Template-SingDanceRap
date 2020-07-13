@@ -7,7 +7,7 @@
  */
 
 #define INF 0x3fffffff              //防止后面溢出，这个不能太大
-// 通过位运算使得 Dij 能运算负权边（待完善）
+
 struct Dijkstra {
     int low_cost[MAXN];
     bool vis[MAXN];

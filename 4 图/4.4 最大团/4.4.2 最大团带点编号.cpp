@@ -7,7 +7,7 @@
  * cnt 中为最大团的点数
  * ans 中从保存了最大团的点，编号 1 - cnt
  */
-#define N 105 // 最大点数
+#define N "edit" // 最大点数
 
 int n, m;
 bool mp[N][N];

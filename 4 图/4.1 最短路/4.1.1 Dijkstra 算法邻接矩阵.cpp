@@ -7,7 +7,7 @@
  * 点编号为 0 - n
  */
 #define MAXN "edit"
-#define INF 0x3f3f3f3f; //防止后面溢出，这个不能太大
+#define INF 0x3fffffff; //防止后面溢出，这个不能太大
 
 struct Dijkstra_m {
     int cost[MAXN][MAXN];
@@ -15,12 +15,6 @@ struct Dijkstra_m {
     int pre[MAXN];
     int lowcost[MAXN];
 
-    // 全部初始化
-    void init() {
-        memset(cost, 0x3f, sizeof(cost));
-    }
-
-    // 部分初始化
     void init(int n) {
         for (int i = 0; i < n; i++)
             memset(cost[i], 0x3f, sizeof(int) * n);

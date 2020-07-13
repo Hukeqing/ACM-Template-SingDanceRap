@@ -1,17 +1,19 @@
+const int MAXN = "Edit";
+
 struct HeapNode {
     int d, u;
     bool operator<(const HeapNode &rhs) const {
         return d > rhs.d;
     }
 };
-const int maxn = "Edit";
+
 struct Dijkstra {
     int n, m;            // 点数和边数
     vector<Edge> edges;  // 边列表
-    vector<int> G[maxn]; // 每个节点出发的边编号(从0开始编号)
-    bool done[maxn];     // 是否已永久标号
-    int d[maxn];         // s到各点的距离
-    int p[maxn];         // 最短路中的一条边
+    vector<int> G[MAXN]; // 每个节点出发的边编号(从0开始编号)
+    bool done[MAXN];     // 是否已永久标号
+    int d[MAXN];         // s到各点的距离
+    int p[MAXN];         // 最短路中的一条边
     void init(int n) {
         this->n = n;
         for (int i = 0; i < n; i++)

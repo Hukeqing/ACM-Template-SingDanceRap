@@ -5,6 +5,9 @@
  * 直接调用 solve 函数求解，点编号范围为 [b, e)，start为起点，graph使用 Graph-B 类型
  * 调用 get_road 函数获取最短路径，将逆序保存在数组 road 中
  */
+
+#define MAXN "edit"
+
 struct SPFA {
     bool visited[MAXN];    //标记数组
     int dist[MAXN];        //源点到顶点i的最短距离

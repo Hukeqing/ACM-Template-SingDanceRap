@@ -4,8 +4,8 @@
  * 然后用 addedge 添加边
  * 最后solve一下
  */
-const int MAXN = 10010;  // 点数
-const int MAXM = 100010; // 边数
+const int MAXN = "edit";  // 点数
+const int MAXM = "edit"; // 边数
 struct Edge
 {
     int to, next;

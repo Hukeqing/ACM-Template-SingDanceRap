@@ -23,9 +23,11 @@ bool finds(int x) {
     }
     return false;
 }
+
 inline void init() {
     memset(line, 0, sizeof(line));
 }
+
 int solve() {
     memset(boys, 0, sizeof(boys));
     int ans = 0;

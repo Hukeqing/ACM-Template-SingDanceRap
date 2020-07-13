@@ -1,96 +1,77 @@
-/*
- * SPFA 版费用流
- * 最小费用最大流，求最大费用只需要取相反数，结果取相反数即可。
- * 点的总数为 N，点的编号 0 ∼ N-1
- */
-const int MAXN = 10000;
-const int MAXM = 100000;
-const int INF = INT_MAX;
-struct Edge
-{
-    int to, next, cap, flow, cost;
-} edge[MAXM];
-int head[MAXN], tol;
-int pre[MAXN], dis[MAXN];
-bool vis[MAXN];
-int N; // 节点总个数，编号从 0 ~ N-1
-void init(int n)
-{
-    N = n;
-    tol = 0;
-    memset(head, -1, sizeof(head));
-}
-void addedge(int u, int v, int cap, int cost)
-{
-    edge[tol].to = v;
-    edge[tol].cap = cap;
-    edge[tol].cost = cost;
-    edge[tol].flow = 0;
-    edge[tol].next = head[u];
-    head[u] = tol++;
-    edge[tol].to = u;
-    edge[tol].cap = 0;
-    edge[tol].cost = -cost;
-    edge[tol].flow = 0;
-    edge[tol].next = head[v];
-    head[v] = tol++;
-}
-bool spfa(int s, int t)
-{
-    queue<int> q;
-    for (int i = 0; i < N; i++)
-    {
-        dis[i] = INF;
-        vis[i] = false;
-        pre[i] = -1;
+#define ll long long
+
+const int maxn = 100;      //点数
+const int INF = 0x3f3f3f3f;
+
+struct Edge {
+    int from, to, cap, flow, cost;
+
+    Edge(int u, int v, int c, int f, int cc)
+            : from(u), to(v), cap(c), flow(f), cost(cc) {}
+};
+
+struct MCMF {
+    int n, m;
+    vector<Edge> edges;
+    vector<int> G[maxn];
+    int inq[maxn];  //是否在队列中
+    int d[maxn];    //bellmanford
+    int p[maxn];    //上一条弧
+    int a[maxn];    //可改进量
+    void init(int n) {
+        this->n = n;
+        for (int i = 0; i <= n; ++i) G[i].clear();
+        edges.clear();
     }
-    dis[s] = 0;
-    vis[s] = true;
-    q.push(s);
-    while (!q.empty())
-    {
-        int u = q.front();
-        q.pop();
-        vis[u] = false;
-        for (int i = head[u]; i != -1; i = edge[i].next)
-        {
-            int v = edge[i].to;
-            if (edge[i].cap > edge[i].flow && dis[v] > dis[u] + edge[i].cost)
-            {
-                dis[v] = dis[u] + edge[i].cost;
-                pre[v] = i;
-                if (!vis[v])
-                {
-                    vis[v] = true;
-                    q.push(v);
+
+    void addEdge(int from, int to, int cap, int cost) {
+        edges.emplace_back(Edge(from, to, cap, 0, cost));
+        edges.emplace_back(Edge(to, from, 0, 0, -cost));
+        m = int(edges.size());
+        G[from].emplace_back(m - 2);
+        G[to].emplace_back(m - 1);
+    }
+
+    bool spfa(int s, int t, int &flow, ll &cost) {
+        for (int i = 1; i <= n; ++i) d[i] = INF;
+        memset(inq, 0, sizeof(inq));
+        d[s] = 0;
+        inq[s] = 1;
+        p[s] = 0;
+        queue<int> q;
+        a[s] = INF;
+        q.push(s);
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            inq[u] = 0;
+            for (int i = 0; i < int(G[u].size()); ++i) {
+                Edge &e = edges[G[u][i]];
+                if (e.cap > e.flow && d[e.to] > d[u] + e.cost) {
+                    d[e.to] = d[u] + e.cost;
+                    p[e.to] = G[u][i];
+                    a[e.to] = min(a[u], e.cap - e.flow);
+                    if (!inq[e.to]) {
+                        q.push(e.to);
+                        inq[e.to] = 1;
+                    }
                 }
             }
         }
-    }
-    if (pre[t] == 01)
-        return false;
-    return true;
-}
-// 返回的是最大流，cost 存的是最小费用
-int minCostMaxflow(int s, int t, int &cost)
-{
-    int flow = 0;
-    cost = 0;
-    while (spfa(s, t))
-    {
-        int Min = INF;
-        for (int i = pre[t]; i != -1; i = pre[edge[i ^ 1].to])
-        {
-            if (Min > edge[i].cap - edge[i].flow)
-                Min = edge[i].cap - edge[i].flow;
+        if (d[t] == INF) return false;
+        flow += a[t];
+        cost += (ll) d[t] * (ll) a[t];
+        for (int u = t; u != s; u = edges[p[u]].from) {
+            edges[p[u]].flow += a[t];
+            edges[p[u] ^ 1].flow -= a[t];
         }
-        for (int i = pre[t]; i != -1; i = pre[edge[i ^ 1].to])
-        {
-            edge[i].flow += Min;
-            edge[i ^ 1].flow -= Min;
-            cost += edge[i].cost * Min;
-        }
-        flow += Min;
+        return true;
     }
-    return flow;
-}
+
+    int MincostMaxflow(int s, int t, ll &cost) {
+        int flow = 0;
+        cost = 0;
+        while (spfa(s, t, flow, cost));
+        return flow;
+    }
+} mcmf;

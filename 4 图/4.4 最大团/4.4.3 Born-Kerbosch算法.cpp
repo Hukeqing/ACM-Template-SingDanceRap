@@ -7,7 +7,7 @@
  * 答案保存在 ans 中
  */
 
-const int MAXN = 130;		// 点个数
+const int MAXN = "edit";	// 点个数
 bool mp[MAXN][MAXN];		// 邻接表
 int ans;					// 答案
 int done[MAXN][MAXN], notyet[MAXN][MAXN], searched[MAXN][MAXN];
