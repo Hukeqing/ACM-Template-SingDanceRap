@@ -58,7 +58,7 @@ using namespace std;
  * 3、女生对男生的好感度可以通过公式计算
  * 4、男生可以有匹配失败（女生未确定）
  * 5、可以多个男生匹配同一个女生
- * 
+ *
  * 使用说明：
  * 补充 cmp 内的重载函数
  * 补充变量 boyRankList、num、limit
@@ -67,8 +67,7 @@ using namespace std;
  */
 const int MAXN = 160;
 
-struct boy // 男主的属性——用于计算好感度，必须包含变量 id，用于标记男生的位置
-{
+struct boy { // 男主的属性——用于计算好感度，必须包含变量 id，用于标记男生的位置
     int id;
     int loc, grade, nowf;
     boy() {}
@@ -80,8 +79,7 @@ struct boy // 男主的属性——用于计算好感度，必须包含变量 id
     }
 };
 
-struct cmp // 每一个男生的好感度计算公式，优先者在前返回 true
-{
+struct cmp { // 每一个男生的好感度计算公式，优先者在前返回 true
     bool operator()(boy x, boy y) {
         if ((x.loc == x.nowf && y.loc == y.nowf) || (x.loc != x.nowf && y.loc != y.nowf))
             return x.grade > y.grade;
@@ -125,7 +123,7 @@ void findMatch() {
                 continue;
             int wanna = boyRankList[now][manpos[now]];
             if (girlMatch[wanna].size() < limit[wanna]) {
-                /* 
+                /*
                  * 在此处 new 一个 boy（非指针），要求如下
                  * id = now
                  * 其他属性应与 a[new] 相同，如有必要可以修改成其他的
@@ -136,7 +134,7 @@ void findMatch() {
             } else {
                 if (limit[wanna] > 0) {
                     boy y = girlMatch[wanna].top();
-                    /* 
+                    /*
                      * 在此处 new 一个 boy（非指针），要求如下
                      * id = now
                      * 其他属性应与 a[new] 相同，如有必要可以修改成其他的
