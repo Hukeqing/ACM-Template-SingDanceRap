@@ -1,19 +1,18 @@
-#include <bits/stdc++.h>
-
-#define CHAR_NUM 30
-using namespace std;
-
-const int MAXN = 300000;
-char str[MAXN];
+const int MAXN = 1000100;
 int SA[MAXN], myRank[MAXN], height[MAXN], sum[MAXN], tp[MAXN];
+
 //rank[i] 第i个后缀的排名, SA[i] 排名为i的后缀的位置, Height[i] 排名为i的后缀与排名为(i-1)的后缀的LCP
 //sum[i] 基数排序辅助数组, 存储小于i的元素有多少个, tp[i] rank的辅助数组(按第二关键字排序的结果),与SA意义一样
 
 bool cmp(const int *f, int x, int y, int w) {
     return f[x] == f[y] && f[x + w] == f[y + w];
 }
-
+/**
+ * s 为字符串， n 为字符串长度， m 为字符范围（对于单个字符 = 300）
+ * 字符串的下标从 0 开始，height 数组的下标从 1 开始
+ */
 void get_SA(const char *s, int n, int m) {
+    n += 1;
     //先预处理长度为1的情况
     for (int i = 0; i < m; i++) sum[i] = 0;//清0
     for (int i = 0; i < n; i++) sum[myRank[i] = s[i]]++;//统计每个字符出现的次数
@@ -43,9 +42,10 @@ void get_SA(const char *s, int n, int m) {
         if (p >= n) break;
         m = p;//下次基数排序的最大值
     }
-    //求height
+}
+
+void getHeight(const char *s, int n) {
     int k = 0;
-    n--;
     for (int i = 0; i <= n; i++) myRank[SA[i]] = i;
     for (int i = 0; i < n; i++) {
         if (k) k--;
@@ -58,41 +58,4 @@ void get_SA(const char *s, int n, int m) {
 void reset(int n) {
     for (int i = 0; i < n + 10; i++)
         SA[i] = myRank[i] = height[i] = sum[i] = tp[i] = 0;
-    memset(str, 0, sizeof(str));
-}
-
-/**
- * 比较两串的最长公共子串长度例子
- * @return 状态码
- */
-int main() {
-#ifdef ACM_LOCAL
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-#endif
-
-    int inx;
-    while (cin >> str) {
-        int size = strlen(str);
-        inx = size;
-        str[size++] = 'z' + 1;
-        cin >> (str + size);
-        size = strlen(str);
-        for (int i = 0; i < size; i++) {
-            str[i] -= 'a';
-            str[i] += 1;
-        }
-        size++;// 需要+1，否则原地爆炸
-        get_SA(str, size, CHAR_NUM);
-
-        int ans = 0;
-        for (int i = 2; i <= size; i++)
-            if ((SA[i] - inx) * (SA[i - 1] - inx) < 0)
-                ans = max(ans, height[i]);
-
-        cout << ans << endl;
-        reset(size + 2);
-    }
-
-    return 0;
 }

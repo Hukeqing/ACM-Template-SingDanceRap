@@ -38,7 +38,6 @@ bool aug(int s) {
     for (int i = 1; i <= n; ++i) f[i] = i;
     memset(tp, 0, sizeof tp), memset(pre, 0, sizeof pre);
     tp[que[ql = qr = 1] = s] = 1; // 1: type A ; 2: type B
-    int t = 0;
     while (ql <= qr) {
         int x = que[ql++];
         for (int i = h[x], v = e[i].v; i; i = e[i].nxt, v = e[i].v) {
