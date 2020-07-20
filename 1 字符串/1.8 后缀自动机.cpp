@@ -1,86 +1,189 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
-typedef long long ll;
-
-const int CHAR_NUM = 26;//ascii字符
-#ifdef ACM_LOCAL
-const int NUM = 100000;
-#else
-const int NUM = 200000;
-#endif
+/**
+ *  后缀自动机手写板子
+ *  求到达某个节点的所有等价类中最长字串：len[i]
+ *  求到达某个节点的所有等价类中最短字串：len[link[i]] + 1
+ *  求到达某个节点的子串个数：len[i] - len[link[i]]
+ *  求到达某个节点的所有子串：len[i] * (len[i] + 1) / 2
+ *  地上的节点(非clone节点) => sizeC = 1 的节点
+ *  最小循环移位
+ */
+#define MAXN 2001000
+#define CHAR_NUM 30
 
 struct SAM {
-    int len[NUM * 2]; //最长子串的长度(该节点子串数量=len[x]-len[link[x]])
-    int fa[NUM * 2];   //后缀链接(最短串前部减少一个字符所到达的状态)
-    int ch[NUM * 2][CHAR_NUM];  //状态转移(尾部加一个字符的下一个状态)(图)
-    int tot;    //结点编号
-    int last;    //最后结点
+    int len[MAXN];              // 节点长度
+    int link[MAXN];             // 后缀链接，link
+    int next[MAXN][CHAR_NUM];   // 转移
+    int last;                   // 最后状态
+    int tot;                    // 节点总数：[0, tot)
+    /**
+     * 可选变量区
+     */
+    int lenSorted[MAXN];        // 按照 len 排序后的数组，仅排序 [1, tot) 部分，最终下标范围 [0, tot - 1)
+    int linkD[MAXN];            // parent 树的度，用于拓扑
+    int sizeC[MAXN];            // 节点 i 为结束结点的相同子串个数（所有不相同子串的数量相同）
+    int count[MAXN];            // 以节点 i 为起点，沿着 next 指针能得到多少个不同的子串
 
     /**
-     * 初始化
+     * 基数排序使用的辅助空间数组
      */
+    int lc[MAXN];               // 统计个数
+
+    /* build 函数*/
+
     void init() {
-        for (int i = 1; i <= tot; i++)
-            fa[i] = len[i] = 0, memset(ch[i], 0, sizeof(ch[i]));
-        last = tot = 1; //1表示root起始点 空集
+        tot = 1;
+        last = 0;
+        link[0] = -1;
+        memset(next, 0xff, sizeof(next));
+        memset(sizeC, 0, sizeof(sizeC));
     }
 
-    /**
-     * 将字符c添加进自动机
-     * @param c 目标字符
-     */
-    void extend(int c) {     //插入字符，为字符ascll码值
-        int x = ++tot; //创建一个新结点x;
-        len[x] = len[last] + 1; //  长度等于最后一个结点+1
-        //num[x] = 1;  //接受结点子串除后缀连接还需加一
-        int p;  //第一个有C转移的结点;
-        for (p = last; p && !ch[p][c]; p = fa[p])
-            ch[p][c] = x;//沿着后缀连接 将所有没有字符c转移的节点直接指向新结点
-        if (!p)fa[x] = 1;
-        else {
-            int q = ch[p][c];    //p通过c转移到的结点
-            if (len[p] + 1 == len[q])    //pq是连续的
-                fa[x] = q;
-            else {
-                int nq = ++tot;   //不连续 需要复制一份q结点
-                len[nq] = len[p] + 1;   //令nq与p连续
-                fa[nq] = fa[q];   //因后面link[q]改变此处不加cnt
-                memcpy(ch[nq], ch[q], sizeof(ch[q]));  //复制q的信息给nq
-                for (; p && ch[p][c] == q; p = fa[p])
-                    ch[p][c] = nq;    //沿着后缀连接 将所有通过c转移为q的改为nq
-                fa[q] = fa[x] = nq; //将x和q后缀连接改为nq
-
-            }
+    void build(char c) {
+        int cur = tot++;
+        sizeC[cur] = 1;
+        len[cur] = len[last] + 1;
+        int p = last;
+        while (p != -1) {
+            if (next[p][c - 'a'] == -1)   // 通过减去 'a' 来压缩空间
+                next[p][c - 'a'] = cur;
+            else
+                break;
+            p = link[p];
         }
-        last = x;  //更新最后处理的结点
+        if (p == -1) {
+            link[cur] = 0;
+            last = cur;
+            return;
+        }
+        int q = next[p][c - 'a'];
+        if (len[p] + 1 == len[q]) {
+            link[cur] = q;
+            last = cur;
+            return;
+        }
+        int clone = tot++;
+        for (int i = 0; i < CHAR_NUM; ++i)
+            next[clone][i] = next[q][i];
+        len[clone] = len[p] + 1;
+        while (p != -1 && next[p][c - 'a'] == q) {
+            next[p][c - 'a'] = clone;
+            p = link[p];
+        }
+        link[clone] = link[q];
+        link[cur] = clone;
+        link[q] = clone;
+
+        last = cur;
+    }
+
+    void build(const string &s) {
+        for (auto c : s)
+            build(c);
+    }
+
+    void build(char *s, int n) {
+        for (int i = 0; i < n; ++i)
+            build(s[i]);
+    }
+
+    /*工具函数*/
+
+    /**
+     * 计算 linkD 数组
+     */
+    void parentTreeDegree() {
+        memset(linkD, 0, sizeof(int) * tot);
+        for (int i = 0; i < tot; ++i)
+            linkD[link[i]]++;
     }
 
     /**
-     * 求自动机中不相同子串数量
-     * @return 不相同子串数量
+     * 计算 lenSorted 数组
      */
-    ll getSubNum() {
-        ll ans = 0;
-        for (int i = 2; i <= tot; i++)
-            ans += len[i] - len[fa[i]];   //一状态子串数量等于len[i]-len[link[i]]
-        return ans;
+    void sortLen() {
+        for (int i = 1; i < tot; ++i) lc[i] = 0;
+        for (int i = 1; i < tot; ++i) lc[len[i]]++;
+        for (int i = 2; i < tot; ++i) lc[i] += lc[i - 1];
+        for (int i = 1; i < tot; ++i) lenSorted[--lc[len[i]]] = i;
     }
 
     /**
-     * 获取s的匹配节点
-     * @param s 目标字符串
-     * @return 匹配节点编号
+     * 检测字符串 s 是否是原串的子串
+     * @param s 字符串
+     * @return 字符串 s 最终匹配的节点，如果中途失配，则返回 -1，否则返回非负整数
      */
-    int getPos(string &s) {
-        int index = 0;
-        int i = 1;
-        int size = s.length();
-        for (index = 0; index < size; index++)
-            i = ch[i][s[index] - 'a'];
-
-        return i;
+    int check(const string &s) {
+        int cur = 0;
+        for (auto c : s) {
+            if (next[cur][c - 'a'] != -1)
+                cur = next[cur][c - 'a'];
+            else
+                return -1;
+        }
+        return cur;
     }
 
+    /**
+     * 求整个字符串中，有多少个不同的字串
+     * @return 字串个数
+     */
+    int sumCount() {
+        int res = 0;
+        for (int i = 1; i < tot; ++i)
+            res += len[i] - len[link[i]];
+        return res;
+    }
+
+    /**
+     * 计算 sizeC 数组（使用队列解决）
+     * 效率高但是没有其他作用
+     */
+    void getSizeQueue() {
+        parentTreeDegree();
+        queue<int> q;
+        for (int i = 0; i < tot; ++i) if (linkD[i] == 0) q.push(i);
+        while (!q.empty()) {
+            int cur = q.front();
+            q.pop();
+            sizeC[link[cur]] += sizeC[cur];
+            if (--linkD[link[cur]] == 0 && link[cur] != 0) q.push(link[cur]);
+        }
+    }
+
+    /**
+     * 计算 sizeC 数组（使用基数排序解决）
+     * ！！！请先调用 sortLen ！！！
+     * 效率略低但是同时可以计算出 lenSorted 数组
+     */
+
+    void getSizeLen() {
+        for (int i = tot - 2; i >= 0; --i)
+            sizeC[link[lenSorted[i]]] += sizeC[lenSorted[i]];
+    }
+
+    /**
+     * 计算 count 数组
+     * ！！！请先调用 sortLen ！！！
+     */
+    void getCount() {
+        for (int i = tot - 2; i >= 0; --i) {
+            count[lenSorted[i]] = 1;
+            for (int j = 0; j < 26; ++j)
+                count[lenSorted[i]] += next[lenSorted[i]][j] != -1 ? count[next[lenSorted[i]][j]] : 0;
+        }
+    }
+
+    void debug() {
+        for (int i = 0; i < tot; ++i) {
+            cout << "i: " << setw(3) << i
+                 << " len: " << setw(3) << len[i]
+                 << " link: " << setw(3) << link[i]
+                 << " Next: ";
+            for (int j = 0; j < CHAR_NUM; ++j) {
+                cout << setw(3) << next[i][j];
+            }
+            cout << endl;
+        }
+    }
 } sam;
