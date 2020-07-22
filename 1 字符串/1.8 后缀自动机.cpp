@@ -1,14 +1,14 @@
 /**
- *  后缀自动机手写板子
+ *  后缀自动机
  *  求到达某个节点的所有等价类中最长字串：len[i]
  *  求到达某个节点的所有等价类中最短字串：len[link[i]] + 1
  *  求到达某个节点的子串个数：len[i] - len[link[i]]
  *  求到达某个节点的所有子串：len[i] * (len[i] + 1) / 2
  *  地上的节点(非clone节点) => sizeC = 1 的节点
- *  最小循环移位
+ *  最小循环移位：双倍字符串然后求 SAM
  */
 
-#define MAXN 600100             // 双倍字符串长度
+#define MAXN 2000000            // 双倍字符串长度
 #define CHAR_NUM 30             // 字符集个数，注意修改下方的 (-'a')
 
 struct SAM {
@@ -35,9 +35,12 @@ struct SAM {
 
     void init() {
         tot = 1;
-        last = 0;
         link[0] = -1;
-        memset(next, 0xff, sizeof(next));
+    }
+
+    void reset() {
+        last = 0;
+        memset(next, 0, sizeof(next));
         memset(sizeC, 0, sizeof(sizeC));
     }
 
@@ -48,10 +51,8 @@ struct SAM {
         firstPos[cur] = len[last];
         int p = last;
         while (p != -1) {
-            if (next[p][c - 'a'] == -1)   // 通过减去 'a' 来压缩空间
-                next[p][c - 'a'] = cur;
-            else
-                break;
+            if (!next[p][c - 'a']) next[p][c - 'a'] = cur;
+            else break;
             p = link[p];
         }
         if (p == -1) {
@@ -147,7 +148,7 @@ struct SAM {
         for (int i = tot - 2; i >= 0; --i) {
             count[lenSorted[i]] = 1;
             for (int j = 0; j < 26; ++j)
-                count[lenSorted[i]] += next[lenSorted[i]][j] != -1 ? count[next[lenSorted[i]][j]] : 0;
+                count[lenSorted[i]] += next[lenSorted[i]][j] ? count[next[lenSorted[i]][j]] : 0;
         }
     }
 
@@ -159,10 +160,8 @@ struct SAM {
     int check(const string &s) {
         int cur = 0;
         for (auto c : s) {
-            if (next[cur][c - 'a'] != -1)
-                cur = next[cur][c - 'a'];
-            else
-                return -1;
+            if (next[cur][c - 'a']) cur = next[cur][c - 'a'];
+            else return -1;
         }
         return cur;
     }
@@ -187,11 +186,11 @@ struct SAM {
     int LCS(const string &s, int &endPos) {
         int cur = 0, curLen = 0, maxLen = 0;
         for (int i = 0; i < s.size(); ++i) {
-            while (next[cur][s[i] - 'a'] == -1 && link[cur] != -1) {
+            while (!next[cur][s[i] - 'a'] && link[cur] != -1) {
                 cur = link[cur];
                 curLen = len[cur];
             }
-            if (next[cur][s[i] - 'a'] != -1) {
+            if (next[cur][s[i] - 'a']) {
                 cur = next[cur][s[i] - 'a'];
                 curLen++;
                 if (curLen > maxLen) {
