@@ -7,8 +7,9 @@
  *  地上的节点(非clone节点) => sizeC = 1 的节点
  *  最小循环移位
  */
-#define MAXN 2001000
-#define CHAR_NUM 30
+
+#define MAXN 600100             // 双倍字符串长度
+#define CHAR_NUM 30             // 字符集个数，注意修改下方的 (-'a')
 
 struct SAM {
     int len[MAXN];              // 节点长度
@@ -23,6 +24,7 @@ struct SAM {
     int linkD[MAXN];            // parent 树的度，用于拓扑
     int sizeC[MAXN];            // 节点 i 为结束结点的相同子串个数（所有不相同子串的数量相同）
     int count[MAXN];            // 以节点 i 为起点，沿着 next 指针能得到多少个不同的子串
+    int firstPos[MAXN];         // 对于某个节点形成的子串，最早结束于字符串中第几个字符
 
     /**
      * 基数排序使用的辅助空间数组
@@ -43,6 +45,7 @@ struct SAM {
         int cur = tot++;
         sizeC[cur] = 1;
         len[cur] = len[last] + 1;
+        firstPos[cur] = len[last];
         int p = last;
         while (p != -1) {
             if (next[p][c - 'a'] == -1)   // 通过减去 'a' 来压缩空间
@@ -66,6 +69,7 @@ struct SAM {
         for (int i = 0; i < CHAR_NUM; ++i)
             next[clone][i] = next[q][i];
         len[clone] = len[p] + 1;
+        firstPos[clone] = len[q];
         while (p != -1 && next[p][c - 'a'] == q) {
             next[p][c - 'a'] = clone;
             p = link[p];
@@ -109,33 +113,6 @@ struct SAM {
     }
 
     /**
-     * 检测字符串 s 是否是原串的子串
-     * @param s 字符串
-     * @return 字符串 s 最终匹配的节点，如果中途失配，则返回 -1，否则返回非负整数
-     */
-    int check(const string &s) {
-        int cur = 0;
-        for (auto c : s) {
-            if (next[cur][c - 'a'] != -1)
-                cur = next[cur][c - 'a'];
-            else
-                return -1;
-        }
-        return cur;
-    }
-
-    /**
-     * 求整个字符串中，有多少个不同的字串
-     * @return 字串个数
-     */
-    int sumCount() {
-        int res = 0;
-        for (int i = 1; i < tot; ++i)
-            res += len[i] - len[link[i]];
-        return res;
-    }
-
-    /**
      * 计算 sizeC 数组（使用队列解决）
      * 效率高但是没有其他作用
      */
@@ -172,6 +149,58 @@ struct SAM {
             for (int j = 0; j < 26; ++j)
                 count[lenSorted[i]] += next[lenSorted[i]][j] != -1 ? count[next[lenSorted[i]][j]] : 0;
         }
+    }
+
+    /**
+     * 检测字符串 s 是否是原串的子串
+     * @param s 字符串
+     * @return 字符串 s 最终匹配的节点，如果中途失配，则返回 -1，否则返回非负整数
+     */
+    int check(const string &s) {
+        int cur = 0;
+        for (auto c : s) {
+            if (next[cur][c - 'a'] != -1)
+                cur = next[cur][c - 'a'];
+            else
+                return -1;
+        }
+        return cur;
+    }
+
+    /**
+     * 求整个字符串中，有多少个不同的字串
+     * @return 字串个数
+     */
+    int sumCount() {
+        int res = 0;
+        for (int i = 1; i < tot; ++i)
+            res += len[i] - len[link[i]];
+        return res;
+    }
+
+    /**
+     * 求算两个字符串的最长公共子串（连续）
+     * @param s 另一个字符串
+     * @param endPos (ref)求算的公共子串的最终位置，不包含
+     * @return 公共子串的长度，实际公共子串的下标为 [endPos - return, endPos)
+     */
+    int LCS(const string &s, int &endPos) {
+        int cur = 0, curLen = 0, maxLen = 0;
+        for (int i = 0; i < s.size(); ++i) {
+            while (next[cur][s[i] - 'a'] == -1 && link[cur] != -1) {
+                cur = link[cur];
+                curLen = len[cur];
+            }
+            if (next[cur][s[i] - 'a'] != -1) {
+                cur = next[cur][s[i] - 'a'];
+                curLen++;
+                if (curLen > maxLen) {
+                    maxLen = curLen;
+                    endPos = i + 1;
+                }
+            }
+        }
+        return maxLen;
     }
 
     void debug() {
