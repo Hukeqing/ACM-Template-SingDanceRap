@@ -10,8 +10,8 @@ struct Tarjan {
         Low[u] = DFN[u] = ++Index;
         Stack[top++] = u;
         Instack[u] = true;
-        for (int i = graph1.head[u]; i != -1; i = graph1.edge[i].next) {
-            v = graph1.edge[i].to;
+        for (int i = graph.head[u]; i != -1; i = graph.edge[i].next) {
+            v = graph.edge[i].to;
             if (!DFN[v]) {
                 _tarjan(v);
                 if (Low[u] > Low[v])
@@ -39,4 +39,4 @@ struct Tarjan {
             if (!DFN[i])
                 _tarjan(i);
     }
-};
+} tarjan;

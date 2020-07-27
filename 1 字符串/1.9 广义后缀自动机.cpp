@@ -7,12 +7,23 @@
 
 #define MAXN 2000000            // 双倍字符串长度
 #define CHAR_NUM 30             // 字符集个数，注意修改下方的 (-'a')
+#define NUM 15                  // 字符串个数
 
 struct exSAM {
     int len[MAXN];              // 节点长度
     int link[MAXN];             // 后缀链接，link
     int next[MAXN][CHAR_NUM];   // 转移
     int tot;                    // 节点总数：[0, tot)
+    /**
+     * 可选变量区
+     */
+    int lenSorted[MAXN];        // 按照 len 排序后的数组，仅排序 [1, tot) 部分，最终下标范围 [0, tot - 1)
+    int sizeC[MAXN][NUM];       // 位运算表示某个字符串是否能够到达这个节点
+    int curString;              // 字符串实际个数
+    /**
+     * 基数排序使用的辅助空间数组
+     */
+    int lc[MAXN];               // 统计个数
 
     void init() {
         tot = 1;
@@ -53,13 +64,21 @@ struct exSAM {
     }
 
     int insertTrie(int cur, int c) {
-        if (next[cur][c]) return next[cur][c];
-        return next[cur][c] = tot++;
+        if (!next[cur][c]) next[cur][c] = tot++;
+        sizeC[next[cur][c]][curString]++;
+        return next[cur][c];
     }
 
     void insert(const string &s) {
         int root = 0;
         for (auto ch : s) root = insertTrie(root, ch - 'a');
+        curString++;
+    }
+
+    void insert(const char *s, int n) {
+        int root = 0;
+        for (int i = 0; i < n; ++i) root = insertTrie(root, s[i] - 'a');
+        curString++;
     }
 
     void build() {
@@ -73,6 +92,29 @@ struct exSAM {
             for (int i = 0; i < 26; ++i)
                 if (next[last][i]) q.push({i, last});
         }
+    }
+
+    /* 工具函数 */
+
+    /**
+     * 计算 lenSorted 数组
+     */
+    void sortLen() {
+        for (int i = 1; i < tot; ++i) lc[i] = 0;
+        for (int i = 1; i < tot; ++i) lc[len[i]]++;
+        for (int i = 2; i < tot; ++i) lc[i] += lc[i - 1];
+        for (int i = 1; i < tot; ++i) lenSorted[--lc[len[i]]] = i;
+    }
+
+    /**
+     * 计算 sizeC 数组（使用基数排序解决）
+     * ！！！请先调用 sortLen ！！！
+     * 效率略低但是同时可以计算出 lenSorted 数组
+     */
+    void getSizeLen() {
+        for (int i = tot - 2; i >= 0; --i)
+            for (int j = 0; j < curString; ++j)
+                sizeC[link[lenSorted[i]]][j] += sizeC[lenSorted[i]][j];
     }
 
     void debug() {

@@ -14,10 +14,10 @@ struct SPFA {
     int path[MAXN];        //记录最短路的路径
     int enqueue_num[MAXN]; //记录入队次数
 
-    bool solve(int b, int e, int start, Graph &graph) {
-        memset(visited, false, sizeof(visited));
-        memset(enqueue_num, 0, sizeof(enqueue_num));
+    bool solve(int b, int e, int start, const Graph &graph) {
         for (int i = b; i < e; i++) {
+            visited[i] = false;
+            enqueue_num[i] = 0;
             dist[i] = INT_MAX;
             path[i] = start;
         }
