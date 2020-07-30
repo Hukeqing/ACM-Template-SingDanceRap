@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 #define MAXN 10000
 #define CHAR_NUM 30             // 字符集个数，注意修改下方的 (-'a')
 

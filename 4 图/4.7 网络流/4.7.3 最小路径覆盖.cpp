@@ -8,8 +8,7 @@
 #define MAXN 160  // 点数
 #define MAXM 6010 // 边数
 int n, m;
-struct edge
-{
+struct edge {
     int y, next, c;
 };
 edge s[MAXM * 2];
@@ -21,8 +20,7 @@ int p[MAXN * 2];
 int match[MAXN * 2]; // 如果不需要输出边的内容，则不需要这个变量
 bool tf[MAXN * 2];   // 如果不需要输出边的内容，则不需要这个变量
 // 加边，单项边三个参数，双向边四个参数
-void addedge(int x, int y, int w, int rw = 0)
-{
+void addedge(int x, int y, int w, int rw = 0) {
     y += n;
     len++;
     s[len].y = y;
@@ -35,20 +33,16 @@ void addedge(int x, int y, int w, int rw = 0)
     s[len].next = first[y];
     first[y] = len;
 }
-bool bfs()
-{
+bool bfs() {
     memset(h, 0, sizeof(h));
     queue<int> f;
     h[begin] = 1;
     f.push(begin);
-    while (!f.empty())
-    {
+    while (!f.empty()) {
         int x = f.front();
-        for (int i = first[x]; i != 0; i = s[i].next)
-        {
+        for (int i = first[x]; i != 0; i = s[i].next) {
             int y = s[i].y;
-            if (h[y] == 0 && s[i].c > 0)
-            {
+            if (h[y] == 0 && s[i].c > 0) {
                 h[y] = h[x] + 1;
                 f.push(y);
             }
@@ -57,24 +51,20 @@ bool bfs()
     }
     return h[end];
 }
-int dfs(int x, int t)
-{
+int dfs(int x, int t) {
     if (x == end)
         return t;
     int tot = 0;
-    for (int i = first[x]; i != 0; i = s[i].next)
-    {
+    for (int i = first[x]; i != 0; i = s[i].next) {
         int y = s[i].y;
         if (tot == t)
             return t;
-        if (h[y] == h[x] + 1 && s[i].c > 0)
-        {
+        if (h[y] == h[x] + 1 && s[i].c > 0) {
             int now = dfs(y, min(s[i].c, t - tot));
             tot += now;
             s[i].c -= now;
             s[i ^ 1].c += now;
-            if (now != 0 && x != begin && y != end)
-            {
+            if (now != 0 && x != begin && y != end) {
                 match[x] = y - n;
                 p[y - n] = x;
             }
@@ -84,8 +74,7 @@ int dfs(int x, int t)
         h[x] = 0;
     return tot;
 }
-void maxflowaddedge(int x, int y, int w)
-{
+void maxflowaddedge(int x, int y, int w) {
     len++;
     s[len].y = y;
     s[len].c = w;
@@ -97,25 +86,20 @@ void maxflowaddedge(int x, int y, int w)
     s[len].next = first[y];
     first[y] = len;
 }
-void init()
-{
+void init() {
     for (int i = 1; i <= n; i++)
         match[i] = p[i] = i;
 }
 // 调用此函数求解，返回最小路径数
-int maxflow()
-{
-    for (int i = 1; i <= n; i++)
-    {
+int maxflow() {
+    for (int i = 1; i <= n; i++) {
         maxflowaddedge(begin, i, 1);
         maxflowaddedge(i + n, end, 1);
     }
     int flow = 0;
-    while (bfs())
-    {
+    while (bfs()) {
         int dx = dfs(begin, 1e9);
-        while (dx != 0)
-        {
+        while (dx != 0) {
             flow += dx;
             dx = dfs(begin, 1e9);
         }
@@ -123,8 +107,7 @@ int maxflow()
     return n - flow;
 }
 // 下面两个为边的输出函数，视情况添加
-void out_put(int x)
-{
+void out_put(int x) {
     if (x == 0)
         return;
     if (p[x] != x)
@@ -132,13 +115,10 @@ void out_put(int x)
     tf[x] = true;
     cout << x << " ";
 }
-void print()
-{
+void print() {
     memset(tf, false, sizeof(tf));
-    for (int i = 1; i <= n; i++)
-    {
-        if (match[i] == i && tf[i] == false)
-        {
+    for (int i = 1; i <= n; i++) {
+        if (match[i] == i && tf[i] == false) {
             out_put(i);
             cout << "\n";
         }
