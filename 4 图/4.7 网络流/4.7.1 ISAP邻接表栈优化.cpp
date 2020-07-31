@@ -1,122 +1,66 @@
-/*
- * ISAP+bfs 初始化 + 栈优化
- */
+#define MAXN 300000 + 100
 
-const int MAXN = 100010; // 点数
-const int MAXM = 400010; // 边数
-const int INF = 0x7fffffff;
-struct Edge
-{
-    int to, next, cap, flow;
-} edge[MAXM];
-int tol;
-int head[MAXN];
-int gap[MAXN], dep[MAXN], cur[MAXN];
-void init()
-{
-    tol = 0;
-    memset(head, -1, sizeof(head));
-}
-void addedge(int u, int v, int w, int rw = 0)
-{
-    edge[tol].to = v;
-    edge[tol].cap = w;
-    edge[tol].flow = 0;
-    edge[tol].next = head[u];
-    head[u] = tol++;
-    edge[tol].to = u;
-    edge[tol].cap = rw;
-    edge[tol].flow = 0;
-    edge[tol].next = head[v];
-    head[v] = tol++;
-}
-int Q[MAXN];
-void BFS(int start, int end)
-{
-    memset(dep, -1, sizeof(dep));
-    memset(gap, 0, sizeof(gap));
-    gap[0] = 1;
-    int front = 0, rear = 0;
-    dep[end] = 0;
-    Q[rear++] = end;
-    while (front != rear)
-    {
-        int u = Q[front++];
-        for (int i = head[u]; i != -1; i = edge[i].next)
-        {
-            int v = edge[i].to;
-            if (dep[v] != -1)
-                continue;
-            Q[rear++] = v;
-            dep[v] = dep[u] + 1;
-            gap[dep[v]]++;
-        }
+namespace flow {
+    struct edge {
+        int to, cap, flow, rev;
+    };
+    vector<edge> g[MAXN];
+    int s, t, nCnt, d[MAXN], cur[MAXN];
+    queue<int> q;
+
+    void init(int ss, int tt, int nn) {
+        s = ss;
+        t = tt;
+        for (int i = 1; i <= nCnt; ++i) g[i].clear();
+        nCnt = nn;
     }
-}
-int S[MAXN];
-int sap(int start, int end, int N)
-{
-    BFS(start, end);
-    memcpy(cur, head, sizeof(head));
-    int top = 0;
-    int u = start;
-    int ans = 0;
-    while (dep[start] < N)
-    {
-        if (u == end)
-        {
-            int Min = INF;
-            int inser;
-            for (int i = 0; i < top; i++)
-            {
-                if (Min > edge[S[i]].cap - edge[S[i]].flow)
-                {
-                    Min = edge[S[i]].cap - edge[S[i]].flow;
-                    inser = i;
+
+    void addEdge(int l, int r, int w) {
+        g[l].push_back((edge) {r, w, 0, (int) g[r].size()});
+        g[r].push_back((edge) {l, 0, 0, (int) g[l].size() - 1});
+    }
+
+    bool bfs() {
+        for (int i = 1; i <= nCnt; ++i)
+            d[i] = i == s ? 0 : -1;
+        q.push(s);
+        while (!q.empty()) {
+            int p = q.front();
+            q.pop();
+            for (int i = 0; i < (int) g[p].size(); ++i) {
+                edge e = g[p][i];
+                if (e.cap > e.flow && d[e.to] == -1) {
+                    d[e.to] = d[p] + 1;
+                    q.push(e.to);
                 }
             }
-            for (int i = 0; i < top; i++)
-            {
-                edge[S[i]].flow += Min;
-                edge[S[i] ^ 1].flow -= Min;
-            }
-            ans += Min;
-            top = inser;
-            u = edge[S[top] ^ 1].to;
-            continue;
         }
-        bool flag = false;
-        int v;
-        for (int i = cur[u]; i != -1; i = edge[i].next)
-        {
-            v = edge[i].to;
-            if (edge[i].cap - edge[i].flow && dep[v] + 1 == dep[u])
-            {
-                flag = true;
-                cur[u] = i;
-                break;
-            }
-        }
-        if (flag)
-        {
-            S[top++] = cur[u];
-            u = v;
-            continue;
-        }
-        int Min = N;
-        for (int i = head[u]; i != -1; i = edge[i].next)
-            if (edge[i].cap - edge[i].flow && dep[edge[i].to] < Min)
-            {
-                Min = dep[edge[i].to];
-                cur[u] = i;
-            }
-        gap[dep[u]]--;
-        if (!gap[dep[u]])
-            return ans;
-        dep[u] = Min + 1;
-        gap[dep[u]]++;
-        if (u != start)
-            u = edge[S[--top] ^ 1].to;
+        return d[t] != -1;
     }
-    return ans;
+
+    int dfs(int p, int a) {
+        if (p == t) return a;
+        int ans = 0, now;
+        for (int &i = cur[p]; i < (int) g[p].size(); ++i) {
+            edge &e = g[p][i];
+            if (e.cap > e.flow && d[p] + 1 == d[e.to]) {
+                now = dfs(e.to, min(a, e.cap - e.flow));
+                e.flow += now;
+                g[e.to][e.rev].flow -= now;
+                ans += now;
+                a -= now;
+                if (!a) break;
+            }
+        }
+        return ans;
+    }
+
+    int solve() {
+        int ans = 0;
+        while (bfs()) {
+            for (int i = 1; i <= nCnt; ++i) cur[i] = 0;
+            ans += dfs(s, 1e9);
+        }
+        return ans;
+    }
 }
