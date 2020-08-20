@@ -1,4 +1,4 @@
-#define MAXN 300000 + 100
+const int MAXN = "Edit";
 
 namespace flow {
     struct edge {
