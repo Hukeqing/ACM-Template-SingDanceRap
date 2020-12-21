@@ -12,9 +12,9 @@ int a[NUM];
  */
 struct Trie01 {
     /**
-     * 最大位数，视情况而定，一般int以内使用32即可
+     * 最大位数，视情况而定，一般int以内使用31即可
      */
-    static const int bitSize = 32;
+    static const int bitSize = 31;
     /**
      * 数组实际大小=数据量大小*最大位数
      */
