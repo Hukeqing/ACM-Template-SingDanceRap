@@ -1,0 +1,40 @@
+机试小技巧
+1. 写题前先计算一下自己的算法的复杂度，循环次数1e8≈1000ms
+2. 尽量使用scanf
+3. cin最好关闭同步流
+4. 数组开在全局里；
+5. 数组一般要比题目所给的大小多一点，+10或者直接开两倍
+6. int数组一般上限为1e8，其余可以数组长度用二进制位数换算，int是4位；控制在上限的1/10以内比较好（我猜的）
+7. 注意多样例的用例时，有些输出有Case
+8. 一两个样例点没过的话优先检查一下边界值
+9. 字符串全行读入使用getline
+getline(cin, str);
+
+10. 分割字符串循环读取使用istringstream和getline
+string str;
+istringstream iss = istringstream(str);
+string tmp;
+while (getline(iss, tmp, ' ')) {
+    // todo
+}
+
+11. 大小写快捷转换使用transform+::tolower/::toupper
+transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
+transform(tmp.begin(), tmp.end(), tmp.begin(), ::toupper);
+
+12. dp题（如斐波那契数列），最好自己先本地自测一下最大的取值，看看dp过程是否出现了负数，因为有时中间答案会超出long long的取值范围，可以选用Java大数来做（BigInteger）
+13. 矩阵填充题，需要对边界做特殊判断的时候，可以选择在数组中留一圈边界来方便操作
+14. 掌握sort使用方法
+15. 掌握STL库中vector、set、map、queue、stack、list、priority_queue的定义和增删改查以及foreach写法
+16. 掌握lower_bound（找到第一个大于等于i的数）和upper_bound（找到第一个大于i的数）的使用方法
+17. map、set、priority_queue的增删改查复杂度均为lgn
+18. 若map、set出现超时，可以尝试改用unordered_map和unordered_set
+19. 掌握质数打表
+20. 质因数分解不用考虑复杂度，直接按质数逐步分解即可，复杂度最大为lgn（开根号sqrt）
+21. 掌握树的层次遍历与图的拓扑遍历（使用queue）
+22. 掌握字符串转数字（atoi）、数字转字符串（itoa）的使用
+23. 掌握字符串作流输入（sscanf）、字符串作流输出（sprintf）的使用
+24. 向上取整ceil，向下取整floor（或直接赋值给整型），四舍五入（+0.5后floor）
+25. 树的前后中序遍历
+26. 需要求方案数时可能是DP，可能是DFS
+27. 需要输出所有方案时，最难也只是DFS
