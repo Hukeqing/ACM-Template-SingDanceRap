@@ -6,7 +6,7 @@ using namespace std;
 typedef unsigned long long ull;
 
 ull ha[NUM], fac[NUM];
-ull seed = 201326611;// 201326611 233 50331653
+ull seed = 201326611;// 201326611 233 50331653 212370440130137957ll
 char str[NUM];
 
 /**
