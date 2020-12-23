@@ -1,0 +1,119 @@
+#include<bits/stdc++.h>
+
+#define NUM 4001000
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAXN 40010
+#define MAXM 80020  // 无向图中，前向星的边数要翻倍
+
+struct Graph {
+    struct Edge {
+        int to, next;
+        int cost;
+    } edge[MAXM];
+    int tot;
+    int head[MAXN];
+    /**dfs序所需的数组**/
+    int fa[MAXN];
+    int first[MAXN];
+    int map[MAXN];
+    int remap[MAXN];
+    /**欧拉序所需的数组**/
+    vector<int> ord;
+    /****/
+    /**业务数组**/
+    ll val[MAXN];
+
+    void init(int n) {
+        tot = 0;
+        memset(head, -1, sizeof(int) * (n + 1));
+        memset(fa, -1, sizeof(int) * (n + 1));
+        memset(first, -1, sizeof(int) * (n + 1));
+        memset(map, -1, sizeof(int) * (n + 1));
+        memset(remap, -1, sizeof(int) * (n + 1));
+        ord.clear();
+        ord.push_back(-1);
+        memset(val, 0, sizeof(ll) * (n + 1));
+    }
+
+    void add_edge(int from, int to, int value) {
+        edge[tot].to = to;
+        edge[tot].next = head[from];
+        edge[tot].cost = value;
+        head[from] = tot++;
+    }
+} g;
+
+/**
+ * dfs序的起点
+ */
+int tim = 0;
+
+void dfs(int u) {
+    g.map[u] = tim;// 记录每个点的dfs序
+    g.remap[tim++] = u;
+    g.ord.push_back(g.map[u]);// dfs序作欧拉序
+    for (int i = g.head[u]; ~i; i = g.edge[i].next) {
+        int to = g.edge[i].to;
+        if (to == g.fa[u]) continue;
+        g.fa[to] = u;
+        g.val[to] = g.edge[i].cost + g.val[u];
+        dfs(to);
+        g.ord.push_back(g.map[u]);// 欧拉序
+    }
+}
+
+struct ST {
+    ll STMin[MAXN * 2][20], log[MAXN * 2];
+
+    void initST(int n, vector<int> &a) {
+        log[0] = -1;
+        for (int i = 1; i <= n; ++i) {
+            log[i] = ((i & (i - 1)) == 0) ? log[i - 1] + 1 : log[i - 1];
+            STMin[i][0] = a[i];
+        }
+        for (int j = 1; j < log[n]; ++j) {
+            for (int i = 1; i + (1 << j) - 1 <= n; ++i) {
+                STMin[i][j] = min(STMin[i][j - 1], STMin[i + (1 << (j - 1))][j - 1]);
+            }
+        }
+    }
+
+    ll rmqMin(int l, int r) {
+        ll k = log[r - l + 1];
+        return min(STMin[l][k], STMin[r - (1 << k) + 1][k]);
+    }
+} st;
+
+int n, m;
+
+int main() {
+#ifdef ACM_LOCAL
+    freopen("../std.in", "r", stdin);
+#endif
+    int t;
+    cin >> t;
+    while (t--) {
+        cin >> n >> m;
+        g.init(n + 2);
+        int x, y, z;
+        for (int i = 1; i < n; i++) {
+            cin >> x >> y >> z;
+            g.add_edge(x, y, z);
+            g.add_edge(y, x, z);
+        }
+        tim = 0; // 不忘记初始化dfs序的起点
+        dfs(1);
+        int sz = g.ord.size();
+        st.initST(sz, g.ord);
+        for (int i = 1; i < sz; i++) if (g.first[g.ord[i]] < 0) g.first[g.ord[i]] = i;
+        while (m--) {
+            cin >> x >> y;
+            if (g.first[g.map[x]] > g.first[g.map[y]]) swap(x, y);
+            int lca = g.remap[st.rmqMin(g.first[g.map[x]], g.first[g.map[y]])];
+            cout << g.val[x] + g.val[y] - g.val[lca] * 2 << endl;
+        }
+    }
+    return 0;
+}
