@@ -116,7 +116,7 @@ class LatexCodeMaker:
 \documentclass{article}
 
 \usepackage{listings}
-\usepackage{fontspec, xunicode, xltxtra}
+\usepackage{fontspec, xunicode, xltxtra, xcolor}
 \usepackage{ctex}
 '''))
         self.saver_file.write(str2utf(r'\setmainfont{' + self.main_font + '}[Path = .fonts/]\n'))
@@ -132,7 +132,7 @@ class LatexCodeMaker:
     keepspaces          = true,
     keywordstyle        = \\bfseries,
     basicstyle          = \\small\\ttfamily,
-    commentstyle        = \\color[RGB]{100,100,100},
+    commentstyle        = \\it\\color[RGB]{100,100,100},
     showstringspaces    = false,
 }
 '''))
