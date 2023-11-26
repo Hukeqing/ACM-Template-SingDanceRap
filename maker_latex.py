@@ -71,8 +71,6 @@ class LatexJson:
                  direction_path: str = '',
                  decode_mode: str = 'utf-8',
                  logo_path: Optional[str] = '',
-                 main_font: str = '',
-                 code_font: str = '',
                  should_match: Optional[List[str]] = '',
                  ignore_list: Optional[List[str]] = '',
                  save_file: Optional[str] = '',
@@ -84,8 +82,6 @@ class LatexJson:
         self.direction_path = '.' if direction_path == '' else direction_path
         self.decode_mode = 'utf-8' if decode_mode == '' else decode_mode
         self.logo_path = None if logo_path == '' else logo_path
-        self.main_font = 'Microsoft YaHei' if main_font == '' else main_font
-        self.code_font = 'Consolas' if code_font == '' else code_font
         self.should_match = [r'.+'] if should_match == '' else should_match.split(' ')
         self.ignore_list = [] if ignore_list == '' else ignore_list.split(' ')
         self.saver_file = 'Latex.tex' if save_file == '' else save_file
@@ -102,8 +98,6 @@ class LatexCodeMaker:
             self.padding: Tuple[int, int, int, int] = notation['padding']
             self.decode_mode: str = notation['decode_mode']
             self.logo_path: Optional[str] = notation['logo_path']
-            self.main_font: str = notation['main_font']
-            self.code_font: str = notation['code_font']
             self.should_match: List[str] = notation['should_match']
             self.ignore_list: List[str] = notation['ignore_list']
             self.saver_file = open(notation['saver_file'], 'wb')
@@ -116,22 +110,41 @@ class LatexCodeMaker:
 \documentclass{article}
 
 \usepackage{listings}
-\usepackage{fontspec, xunicode, xltxtra}
+\usepackage{fontspec, xunicode, xltxtra, xcolor}
 \usepackage{ctex}
-'''))
-        self.saver_file.write(str2utf(r'\setmainfont{' + self.main_font + '}\n'))
-        self.saver_file.write(str2utf(r'\newfontfamily\codefont{' + self.code_font + '}\n'))
-        self.saver_file.write(str2utf('''
+
+\setmainfont{SourceHanSerifSC}[
+    Path            = .fonts/,
+    Extension       = .otf,
+    UprightFont     = *-Light,
+    BoldFont        = *-Regular]
+
+\setsansfont{SourceHanSansCN}[
+    Path            = .fonts/,
+    Extension       = .otf,
+    UprightFont     = *-Light,
+    BoldFont        = *-Regular]
+
+\setmonofont{SourceCodePro}[
+    Path            = .fonts/,
+    Extension       = .otf,
+    UprightFont     = *-Light,
+    BoldFont        = *-Regular,
+    ItalicFont      = *-LightIt,
+    BoldItalicFont  = *-BoldIt]
+
 \lstset{
-    language    = c++,
-    breaklines  = true,
-    captionpos  = b,
-    tabsize     = 4,
-    numbers     = left,
-    columns     = fullflexible,
-    keepspaces  = true,
-    basicstyle  = \small\codefont,
-    showstringspaces = false,
+    language            = c++,
+    breaklines          = true,
+    captionpos          = b,
+    tabsize             = 4,
+    numbers             = left,
+    columns             = fixed,
+    keepspaces          = true,
+    keywordstyle        = \color{red}\bfseries,
+    basicstyle          = \small\ttfamily,
+    commentstyle        = \it\color[RGB]{100,100,100},
+    showstringspaces    = false,
 }
 '''))
         self.init_tex()
@@ -256,8 +269,6 @@ class LatexSetting:
                                direction_path=input('请输入目录文件夹位置(可以使用相对位置，留空则为当前目录): '),
                                decode_mode=input('请输入你的文件(非输出文件，输出的tex文件默认为utf-8)编码格式("utf-8" or "gb2312"，默认为utf-8): '),
                                logo_path=input('请输入封面logo文件位置(可以使用相对位置，留空则无): '),
-                               main_font=input('请输入文档目录等字体(留空为"Microsoft YaHei"): '),
-                               code_font=input('请输入代码字体(留空为"Consolas"): '),
                                should_match=input('请输入需要处理的文件(文件夹)的文件名通用样式(留空则为全部文件，正则表达式全匹配模式，多种模式则用单个空格隔开): '),
                                ignore_list=input('请输入免处理的文件(文件夹)的文件名通用样式(留空则为全部文件，正则表达式全匹配模式，多种模式则用单个空格隔开): '),
                                save_file=input('请输入最终保存的文件名(默认为Latex.tex): '),

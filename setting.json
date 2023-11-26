@@ -11,14 +11,14 @@
     "direction_path": ".",
     "decode_mode": "utf-8",
     "logo_path": "logo.jpg",
-    "main_font": "Microsoft YaHei",
-    "code_font": "Consolas",
     "should_match": [
         "\\d+.+"
     ],
     "ignore_list": [
         "\\.git",
-        "\\.vscode"
+        "\\.vscode",
+        "\\.github",
+        "\\.fonts"
     ],
     "saver_file": "ACM-Template.tex",
     "args": "-h -fe"
