@@ -37,8 +37,7 @@ jobs:
             unzip -q notosanscjk.zip -d notosanscjk
             unzip -q notoserifcjk.zip -d notoserifcjk
             unzip -q robotomono.zip -d robotomono
-            unzip -q ./cm-unicode.zip
-            cp -r notosans notoserif notosanscjk notoserifcjk robotomono cm-unicode/fonts/otf/* /usr/share/fonts
+            cp -r notosans notoserif notosanscjk notoserifcjk robotomono /usr/share/fonts
             fc-cache
 
       - name: Release
