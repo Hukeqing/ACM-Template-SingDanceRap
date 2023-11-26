@@ -11,14 +11,16 @@
     "direction_path": ".",
     "decode_mode": "utf-8",
     "logo_path": "logo.jpg",
-    "main_font": "Microsoft YaHei",
-    "code_font": "Consolas",
+    "main_font": "SourceHanSans",
+    "code_font": "TeX Gyre Curso",
     "should_match": [
         "\\d+.+"
     ],
     "ignore_list": [
         "\\.git",
-        "\\.vscode"
+        "\\.vscode",
+        "\\.github",
+        "\\.fonts"
     ],
     "saver_file": "ACM-Template.tex",
     "args": "-h -fe"

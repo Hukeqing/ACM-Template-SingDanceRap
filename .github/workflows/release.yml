@@ -21,14 +21,6 @@ jobs:
       - name: Build Latex file
         run: python3 maker_latex.py Y
 
-      - name: ls for test
-        run: ls
-
-      - uses: xu-cheng/latex-action@v3
-        with:
-          root_file: ACM-Template.tex
-          latexmk_use_xelatex: true
-
       - uses: xu-cheng/latex-action@v3
         with:
           root_file: ACM-Template.tex
@@ -36,5 +28,6 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: ACM-Template.pdf
