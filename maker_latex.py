@@ -123,15 +123,17 @@ class LatexCodeMaker:
         self.saver_file.write(str2utf(r'\setmonofont{' + self.code_font + '}[Path = .fonts/]\n'))
         self.saver_file.write(str2utf('''
 \lstset{
-    language    = c++,
-    breaklines  = true,
-    captionpos  = b,
-    tabsize     = 4,
-    numbers     = left,
-    columns     = fullflexible,
-    keepspaces  = true,
-    basicstyle  = \\small\\ttfamily,
-    showstringspaces = false,
+    language            = c++,
+    breaklines          = true,
+    captionpos          = b,
+    tabsize             = 4,
+    numbers             = left,
+    columns             = fixed,
+    keepspaces          = true,
+    keywordstyle        = \\bfseries,
+    basicstyle          = \\small\\ttfamily,
+    commentstyle        = \\it\\color[RGB]{100,100,100},
+    showstringspaces    = false,
 }
 '''))
         self.init_tex()
