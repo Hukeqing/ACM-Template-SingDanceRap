@@ -132,7 +132,7 @@ class LatexCodeMaker:
     keepspaces          = true,
     keywordstyle        = \\bfseries,
     basicstyle          = \\small\\ttfamily,
-    commentstyle        = \\it\\color[RGB]{100,100,100},
+    commentstyle        = \\color[RGB]{100,100,100},
     showstringspaces    = false,
 }
 '''))
