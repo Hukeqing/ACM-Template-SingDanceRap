@@ -24,17 +24,24 @@ jobs:
 
       - name: Download font
         run: |
-          wget -q -O source-code-pro.zip https://github.com/adobe-fonts/source-code-pro/releases/download/2.030R-ro%2F1.050R-it/source-code-pro-2.030R-ro-1.050R-it.zip
-          wget -q -O source-han-serif.zip https://github.com/adobe-fonts/source-han-serif/releases/download/2.002R/09_SourceHanSerifSC.zip
-          wget -q -O source-han-sans.zip https://github.com/adobe-fonts/source-han-sans/releases/download/2.004R/SourceHanSansCN.zip
-          unzip -q source-code-pro.zip -d source-code-pro
-          unzip -q source-han-serif.zip -d source-han-serif
-          unzip -q source-han-sans.zip -d source-han-sans
+          wget -q -O notosans.zip "https://noto-website-2.storage.googleapis.com/pkgs/NotoSans-hinted.zip"
+          wget -q -O notoserif.zip "https://noto-website-2.storage.googleapis.com/pkgs/NotoSerif-hinted.zip"
+          wget -q -O notoserifcjk.zip "https://noto-website-2.storage.googleapis.com/pkgs/NotoSerifCJKsc-hinted.zip"
+          wget -q -O notosanscjk.zip "https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKsc-hinted.zip"
+          wget -q -O robotomono.zip "https://fonts.google.com/download?family=Roboto%20Mono"
+          unzip -q notosans.zip -d notosans
+          unzip -q notoserif.zip -d notoserif
+          unzip -q notosanscjk.zip -d notosanscjk
+          unzip -q notoserifcjk.zip -d notoserifcjk
+          unzip -q robotomono.zip -d robotomono
           mkdir -p ./.fonts
-          cp -v source-code-pro/*/OTF/*.otf ./.fonts/
-          cp -v source-han-serif/OTF/*/*.otf ./.fonts/
-          cp -v source-han-sans/SubsetOTF/*/*.otf ./.fonts/
-          rm -rf source-code-pro{,.zip} source-han-serif{,.zip} source-han-sans{,.zip}
+          cp -v notosans/*.ttf ./.fonts/
+          cp -v notoserif/*.ttf ./.fonts/
+          cp -v notosanscjk/*.otf ./.fonts/
+          cp -v notoserifcjk/*.otf ./.fonts/
+          cp -v robotomono/static/*.ttf ./.fonts/
+
+          rm -rf notosans{,.zip} notoserif{,.zip} notosanscjk{,.zip} notoserifcjk{,.zip} robotomono{,.zip}
 
       - uses: xu-cheng/latex-action@v3
         with:

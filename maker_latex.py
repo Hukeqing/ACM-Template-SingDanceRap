@@ -113,25 +113,19 @@ class LatexCodeMaker:
 \usepackage{fontspec, xunicode, xltxtra, xcolor}
 \usepackage{ctex}
 
-\setmainfont{SourceHanSerifSC}[
+\setmainfont{NotoSansCJKsc}[
     Path            = .fonts/,
     Extension       = .otf,
     UprightFont     = *-Light,
-    BoldFont        = *-Regular]
+    BoldFont        = *-Bold]
 
-\setsansfont{SourceHanSansCN}[
+\setmonofont{RobotoMono}[
     Path            = .fonts/,
-    Extension       = .otf,
+    Extension       = .ttf,
     UprightFont     = *-Light,
-    BoldFont        = *-Regular]
-
-\setmonofont{SourceCodePro}[
-    Path            = .fonts/,
-    Extension       = .otf,
-    UprightFont     = *-Light,
-    BoldFont        = *-Regular,
-    ItalicFont      = *-LightIt,
-    BoldItalicFont  = *-BoldIt]
+    BoldFont        = *-Bold,
+    ItalicFont      = *-LightItalic,
+    BoldItalicFont  = *-BoldItalic]
 
 \lstset{
     language            = c++,
