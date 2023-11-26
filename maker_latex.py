@@ -119,8 +119,8 @@ class LatexCodeMaker:
 \usepackage{fontspec, xunicode, xltxtra, xcolor}
 \usepackage{ctex}
 '''))
-        self.saver_file.write(str2utf(r'\setmainfont{' + self.main_font + '}[Path = .fonts/main]\n'))
-        self.saver_file.write(str2utf(r'\setmonofont{' + self.code_font + '}[Path = .fonts/mono,BoldFont=' + self.code_font + '-Regular]\n'))
+        self.saver_file.write(str2utf(r'\setmainfont{' + self.main_font + '}[Path = .fonts/main/]\n'))
+        self.saver_file.write(str2utf(r'\setmonofont{' + self.code_font + '}[Path = .fonts/mono/,BoldFont=' + self.code_font + '-Regular]\n'))
         self.saver_file.write(str2utf('''
 \lstset{
     language            = c++,
