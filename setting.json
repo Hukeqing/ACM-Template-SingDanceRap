@@ -11,8 +11,8 @@
     "direction_path": ".",
     "decode_mode": "utf-8",
     "logo_path": "logo.jpg",
-    "main_font": "SourceHanSans",
-    "code_font": "TeX Gyre Curso",
+    "main_font": "notoserifcjk",
+    "code_font": "robotomono",
     "should_match": [
         "\\d+.+"
     ],
