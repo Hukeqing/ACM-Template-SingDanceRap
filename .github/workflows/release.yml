@@ -1,0 +1,40 @@
+on:
+  push:
+    branches: [ master ]
+
+name: Release Template File
+
+jobs:
+  build:
+    name: Release Template File
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Update APT
+        run: sudo apt update
+
+      - name: Install Python3
+        run: sudo apt -y install python3
+
+      - name: Build Latex file
+        run: python3 maker_latex.py Y
+
+      - name: ls for test
+        run: ls
+
+      - uses: xu-cheng/latex-action@v3
+        with:
+          root_file: ACM-Template.tex
+          latexmk_use_xelatex: true
+
+      - uses: xu-cheng/latex-action@v3
+        with:
+          root_file: ACM-Template.tex
+          latexmk_use_xelatex: true
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ACM-Template.pdf
