@@ -106,18 +106,18 @@ class LatexCodeMaker:
         except:
             print('样式表(JSON)出错，请新建样式表')
             exit(-1)
-        self.saver_file.write(str2utf(r'''
-\documentclass{article}
+        self.saver_file.write(str2utf(r'''\documentclass{article}
 
-\usepackage{listings}
-\usepackage{fontspec, xunicode, xltxtra, xcolor}
-\usepackage{ctex}
+\usepackage{listings, fontspec, xunicode, xltxtra, xcolor, ctex, xeCJK}
 
-\setmainfont{NotoSansCJKsc}[
+\setmainfont{NotoSans}[
     Path            = .fonts/,
-    Extension       = .otf,
+    Extension       = .ttf,
     UprightFont     = *-Light,
-    BoldFont        = *-Bold]
+    BoldFont        = *-Bold,
+    ItalicFont      = *-LightItalic,
+    BoldItalicFont  = *-BoldItalic
+]
 
 \setmonofont{RobotoMono}[
     Path            = .fonts/,
@@ -125,7 +125,22 @@ class LatexCodeMaker:
     UprightFont     = *-Light,
     BoldFont        = *-Bold,
     ItalicFont      = *-LightItalic,
-    BoldItalicFont  = *-BoldItalic]
+    BoldItalicFont  = *-BoldItalic
+]
+
+\setCJKmainfont{NotoSansCJKsc}[
+    Path            = .fonts/,
+    Extension       = .otf,
+    UprightFont     = *-Light,
+    BoldFont        = *-Bold
+]
+
+\setCJKmonofont{NotoSansCJKsc}[
+    Path            = .fonts/,
+    Extension       = .otf,
+    UprightFont     = *-Light,
+    BoldFont        = *-Bold
+]
 
 \lstset{
     language            = c++,
